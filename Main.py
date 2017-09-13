@@ -1,4 +1,5 @@
 import random
+import time
 # args = ["Test", "Dog", "cat"]
 #
 # to_print = ''
@@ -8,6 +9,7 @@ import random
 #     args.remove(item)
 #
 # print(to_print)
+
 
 def randomSentence(letters):
     file = open("/usr/share/dict/words", "r")
@@ -21,4 +23,43 @@ def randomSentence(letters):
 
     return to_return
 
-print(randomSentence(5))
+
+class FileParser:
+    def __init__(self, file):
+        file = open(file, "r")
+        self.lines = file.read().splitlines()
+
+        self.words = []
+        for i in range(len(self.lines)):
+            self.words += self.lines[i].split()
+
+
+class Histogram:
+    data = {}
+    raw = 0
+
+    def __init__(self, words):
+        for i in range(len(words)):
+            self.add(words[i], None)
+
+    def add(self, key, value):
+        self.raw += 1
+
+        if key in self.data:
+            self.data[key] += 1
+        else:
+            self.data[key] = 1
+
+    def length(self):
+        return len(self.data)
+
+    def frequency(self, key):
+        if key in self.data:
+            return self.data[key]
+
+    def __str__(self):
+        return str(self.data)
+
+file = FileParser("test_data.txt")
+gram = Histogram(file.words)
+print(gram.frequency("fish"))
