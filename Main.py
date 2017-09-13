@@ -11,7 +11,6 @@ import time
 #
 # print(to_print)
 
-
 def randomSentence(letters):
     file = open("/usr/share/dict/words", "r")
 
@@ -105,5 +104,4 @@ class Histogram:
 
 file = FileParser("test_data.txt")
 gram = Histogram(file.words)
-print(gram)
-print(gram.random_word())
+
