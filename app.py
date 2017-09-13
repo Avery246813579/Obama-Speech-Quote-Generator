@@ -4,6 +4,7 @@ app = Flask(__name__)
 import Main
 import random
 import os
+import time
 
 generator = Main.Generator("test_data.txt")
 
@@ -20,7 +21,7 @@ def new_tweet():
     else:
         try:
             sentence = generator.generate_sentence(int(words))
-        except TypeError:
+        except ValueError:
             sentence = generator.generate_sentence(random.randint(0, 25))
 
     return jsonify({
@@ -42,7 +43,7 @@ def hello_world():
         except TypeError:
             sentence = generator.generate_sentence(random.randint(0, 25))
 
-    return render_template('index.html', sentence=sentence)
+    return render_template('index.html', sentence=sentence, time=time.time())
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))

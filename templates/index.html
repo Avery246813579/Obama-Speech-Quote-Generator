@@ -3,7 +3,8 @@
     <title>Obama Quote Generator</title>
 
     <title>Silicon Valley</title>
-    <!--<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">-->
+    <!--<link rel=stylesheet type=text/css href="/static/style.css?cache={{time}}">-->
+    <link rel=stylesheet type=text/css href="/static/style.css?cache={{time}}">
 </head>
 
 <div id="sentence">{{ sentence }}</div>
@@ -13,7 +14,7 @@
     <button onclick="refreshSentence()">New Sentence</button>
 </div>
 
-<script src="{{ url_for('static', filename='jquery-3.2.1.min.js') }}"></script>
+<script src="/static/jquery-3.2.1.min.js"></script>
 <script>
     function refreshSentence(){
         var length = document.getElementById('length');
