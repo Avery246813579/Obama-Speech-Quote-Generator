@@ -11,6 +11,7 @@ import time
 #
 # print(to_print)
 
+
 def randomSentence(letters):
     file = open("/usr/share/dict/words", "r")
 
@@ -24,6 +25,21 @@ def randomSentence(letters):
     return to_return
 
 
+class Generator:
+    def __init__(self, file):
+        self.file = FileParser(file)
+        self.histogram = Histogram(self.file.words)
+
+    def generate_sentence(self, length):
+        to_return = ''
+
+        for i in range(length):
+            to_return += self.histogram.random_word() + " "
+
+        return to_return
+
+
+# Parser to parse the words and lines from a text file
 class FileParser:
     def __init__(self, file):
         file = open(file, "r")
@@ -34,6 +50,7 @@ class FileParser:
             self.words += self.lines[i].split()
 
 
+# Histogram class used to store our words
 class Histogram:
     data = []
     raw = 0
@@ -44,6 +61,7 @@ class Histogram:
 
         self.calculate_percents()
 
+    # Calculates the percentages a certain set of words occur and stres it at the third index in their respected array
     def calculate_percents(self):
         last = 0
 
@@ -55,6 +73,7 @@ class Histogram:
 
             last += self.data[i][0] / self.raw * len(self.data[i][1])
 
+    # Adds an element to the histogram
     def add(self, key):
         self.raw += 1
         length = len(self.data)
@@ -85,9 +104,11 @@ class Histogram:
         else:
             self.data.insert(0, [key])
 
-    def length(self):
-        return len(self.data)
+    # Get's the number of words in the histogram
+    def __len__(self):
+        return self.raw
 
+    # Get's a random word from the histogram
     def random_word(self):
         number = random.random()
 
@@ -95,13 +116,10 @@ class Histogram:
             if number < self.data[i][2]:
                 return self.data[i][1][random.randint(0, len(self.data[i][1]) - 1)]
 
+    # Gets the frequency of the word
     def frequency(self, key):
         if key in self.data:
             return self.data[key]
 
     def __str__(self):
         return str(self.data)
-
-file = FileParser("test_data.txt")
-gram = Histogram(file.words)
-
