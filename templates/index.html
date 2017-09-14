@@ -7,12 +7,20 @@
     <link rel=stylesheet type=text/css href="/static/style.css?cache={{time}}">
 </head>
 
-<div id="sentence">{{ sentence }}</div>
+<body>
+<div id="wrapper">
+    <div id="navbar">
+        Tets
+    </div>
 
-<div style="float: left">
-    <input placeholder="Sentence Length" id="length">
-    <button onclick="refreshSentence()">New Sentence</button>
+    <div id="sentence">{{ sentence }}</div>
+
+    <div style="float: left">
+        <input placeholder="Sentence Length" id="length">
+        <button class="myButton" onclick="refreshSentence()">New Sentence</button>
+    </div>
 </div>
+</body>
 
 <script src="/static/jquery-3.2.1.min.js"></script>
 <script>
@@ -37,5 +45,9 @@
             }
         });
     }
+
+
+
+
 
 </script>
