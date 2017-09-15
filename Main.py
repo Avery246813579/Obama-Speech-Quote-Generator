@@ -1,17 +1,3 @@
-import random
-import time
-
-# args = ["Test", "Dog", "cat"]
-#
-# to_print = ''
-# while len(args) > 0:
-#     item = args[random.randint(0, len(args) - 1)]
-#     to_print += item + " "
-#     args.remove(item)
-#
-# print(to_print)
-
-
 def randomSentence(letters):
     file = open("/usr/share/dict/words", "r")
 
@@ -123,3 +109,11 @@ class Histogram:
 
     def __str__(self):
         return str(self.data)
+
+
+if __name__ == '__main__':
+    array = ["dog"]
+    dog = array.copy()
+
+    print(dog)
+    print(array)
