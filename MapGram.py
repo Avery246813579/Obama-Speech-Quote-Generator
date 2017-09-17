@@ -13,11 +13,11 @@ class MapGram:
         self.data = dict()
 
         for i in range(length):
-            if i > length - 3:
+            if i > length - 4:
                 self.add(words[i], '-<NONE>-')
                 continue
 
-            self.add(words[i] + " " + words[i + 1], words[i + 1] + " " + words[i + 2])
+            self.add(words[i] + " " + words[i + 1] + " " + words[i + 2], words[i + 1] + " " + words[i + 2] + " " + words[i + 3])
 
         for key in self.data:
             self.data[key].calculate_percents()
