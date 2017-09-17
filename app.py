@@ -9,7 +9,7 @@ import twitter
 
 model = MapGram.MarkovModel("test_data.txt")
 
-@app.route('/new', methods=['POST'])
+@app.route('/tweet', methods=['POST'])
 def tweet():
     body = json.loads(request.data)
 
@@ -20,7 +20,7 @@ def tweet():
     })
 
 
-@app.route('/tweet', methods=['POST'])
+@app.route('/new', methods=['POST'])
 def new_tweet():
     body = json.loads(request.data)
 

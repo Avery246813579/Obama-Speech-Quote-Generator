@@ -8,7 +8,6 @@ class MapGram:
     def __init__(self, file):
         words = Main.FileParser(file).words
         length = len(words)
-        print(length)
 
         self.data = dict()
 
