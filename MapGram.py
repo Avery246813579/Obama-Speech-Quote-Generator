@@ -4,18 +4,20 @@ import random
 
 class MapGram:
     # Convert this dictionary to a Histogram
-    data = {}
 
     def __init__(self, file):
         words = Main.FileParser(file).words
         length = len(words)
+        print(length)
+
+        self.data = dict()
 
         for i in range(length):
-            if i > length - 2:
+            if i > length - 3:
                 self.add(words[i], '-<NONE>-')
                 continue
 
-            self.add(words[i], words[i + 1])
+            self.add(words[i] + " " + words[i + 1], words[i + 1] + " " + words[i + 2])
 
         for key in self.data:
             self.data[key].calculate_percents()
@@ -49,17 +51,17 @@ class MarkovModel:
             if element is None:
                 word = self.map_gram.random_key()
                 element = self.map_gram.data[word]
-                word = " " + word
+                word = " " + word.split(" ")[0]
             else:
                 word = element.random_word()
 
                 if word == "-<NONE>-":
                     word = self.map_gram.random_key()
                     element = self.map_gram.data[word]
-                    word = ". " + word
+                    word = ". " + word.split(" ")[0]
                 else:
                     element = self.map_gram.data[word]
-                    word = " " + word
+                    word = " " + word.split(" ")[0]
 
             to_return += word
 

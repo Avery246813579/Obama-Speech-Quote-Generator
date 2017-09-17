@@ -1,12 +1,12 @@
 from flask import Flask, request, jsonify, render_template, json
 app = Flask(__name__)
 
-import Main
 import random
 import os
 import time
+import MapGram
 
-generator = Main.Generator("test_data.txt")
+model = MapGram.MarkovModel("test_data.txt")
 
 
 @app.route('/new', methods=['POST'])
@@ -17,12 +17,12 @@ def new_tweet():
 
     sentence = None
     if words is None:
-        sentence = generator.generate_sentence(random.randint(0, 25))
+        sentence = model.generate_sentence(random.randint(0, 25))
     else:
         try:
-            sentence = generator.generate_sentence(int(words))
+            sentence = model.generate_sentence(int(words))
         except ValueError:
-            sentence = generator.generate_sentence(random.randint(0, 25))
+            sentence = model.generate_sentence(random.randint(0, 25))
 
     return jsonify({
         "success": True,
@@ -36,12 +36,12 @@ def hello_world():
 
     sentence = None
     if words is None:
-        sentence = generator.generate_sentence(random.randint(0, 25))
+        sentence = model.generate_sentence(random.randint(0, 25))
     else:
         try:
-            sentence = generator.generate_sentence(int(words))
+            sentence = model.generate_sentence(int(words))
         except TypeError:
-            sentence = generator.generate_sentence(random.randint(0, 25))
+            sentence = model.generate_sentence(random.randint(0, 25))
 
     return render_template('index.html', sentence=sentence, time=time.time())
 
