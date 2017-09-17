@@ -5,11 +5,22 @@ import random
 import os
 import time
 import MapGram
+import twitter
 
 model = MapGram.MarkovModel("test_data.txt")
 
-
 @app.route('/new', methods=['POST'])
+def new_tweet():
+    body = json.loads(request.data)
+
+    twitter.tweet(body['tweet'])
+
+    return jsonify({
+        "success": True
+    })
+
+
+@app.route('/tweet', methods=['POST'])
 def new_tweet():
     body = json.loads(request.data)
 

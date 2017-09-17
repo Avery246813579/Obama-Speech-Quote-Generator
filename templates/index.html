@@ -18,6 +18,7 @@
     <div style="float: left">
         <input placeholder="Sentence Length" id="length">
         <button class="myButton" onclick="refreshSentence()">New Sentence</button>
+        <button class="myButton" onclick="tweet()">Tweet</button>
     </div>
 </div>
 </body>
@@ -25,6 +26,27 @@
 <script src="/static/jquery-3.2.1.min.js"></script>
 <script>
     function refreshSentence(){
+        var length = document.getElementById('length');
+
+        $.ajax({
+            url: "new",
+            method: "post",
+            contentType: 'application/json',
+            data: JSON.stringify({
+                words: length.value
+            }),
+            dataType: 'json',
+        }).done(function(object) {
+            var text = document.getElementById('sentence');
+
+            if (object['success'] === true){
+                text.innerHTML = object['data'];
+            }else{
+                alert("Internal Error!");
+            }
+        });
+
+        function tweet(){
         var length = document.getElementById('length');
 
         $.ajax({

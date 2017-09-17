@@ -20,9 +20,9 @@ url = 'https://api.twitter.com/1.1/statuses/update.json'
 
 # The contents of status (i.e. tweet text)
 status = 'If you are reading this on Twitter, the API request worked!'
+def tweet(status):
+    resp = session.post(url, { 'status': status })
+    return resp.text
 
-# Send a POST request to the url with a 'status' parameter
-resp = session.post(url, { 'status': status })
-
-# Show the text from the response
-print(resp.text)
+if __name__ == "__main__":
+    tweet("Grass. Taste bad")
