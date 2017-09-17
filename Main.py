@@ -1,3 +1,5 @@
+import random
+
 def randomSentence(letters):
     file = open("/usr/share/dict/words", "r")
 
@@ -38,12 +40,9 @@ class FileParser:
 
 # Histogram class used to store our words
 class Histogram:
-    data = []
-    raw = 0
-
-    def __init__(self, words):
-        for i in range(len(words)):
-            self.add(words[i])
+    def __init__(self):
+        self.data = []
+        self.raw = 0
 
         self.calculate_percents()
 
@@ -88,7 +87,7 @@ class Histogram:
         if self.data[0][0] == 1:
             self.data[0][1].append(key)
         else:
-            self.data.insert(0, [key])
+            self.data.insert(0, [1, [key]])
 
     # Get's the number of words in the histogram
     def __len__(self):

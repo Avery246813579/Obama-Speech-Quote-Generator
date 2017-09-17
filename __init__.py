@@ -1,4 +1,3 @@
-__all__ = ['random', 'time']
+__all__ = ['Main']
 
-import random
-import time
+import Main
