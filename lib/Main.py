@@ -1,5 +1,7 @@
 import random
 
+__all__ = ['FileParser', 'Histogram']
+
 def randomSentence(letters):
     file = open("/usr/share/dict/words", "r")
 

@@ -1,15 +1,13 @@
 from flask import Flask, request, jsonify, render_template, json
-app = Flask(__name__)
-
 import random
 import os
 import time
-import MapGram
-import twitter
 
-model = MapGram.MarkovModel("test_data.txt", 3)
+import MapGram, twitter
+app = Flask(__name__)
+
+model = MapGram.MarkovModel("static/test_data.txt", 3)
 tweets = []
-
 
 @app.route('/tweet', methods=['POST'])
 def tweet():

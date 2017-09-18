@@ -1,12 +1,15 @@
-import Main
 import random
+
+from Main import FileParser, Histogram
+
+__all__ = ['MapGram', 'MarkovModel']
 
 
 class MapGram:
     # Convert this dictionary to a Histogram
 
     def __init__(self, file, order):
-        parser = Main.FileParser(file)
+        parser = FileParser(file)
 
         words = parser.words
         length = len(words)
@@ -28,7 +31,7 @@ class MapGram:
 
     def add(self, dta, value):
         if dta not in self.data:
-            self.data[dta] = Main.Histogram()
+            self.data[dta] = Histogram()
 
         self.data[dta].add(value)
 
@@ -76,7 +79,7 @@ class MarkovModel:
 
 
 if __name__ == '__main__':
-    model = MarkovModel("test_data.txt", 3)
+    model = MarkovModel("../static/test_data.txt", 3)
 
     print("Booted")
     print(model.generate_sentence(20))
