@@ -6,9 +6,13 @@ class MapGram:
     # Convert this dictionary to a Histogram
 
     def __init__(self, file, order):
-        words = Main.FileParser(file).words
+        parser = Main.FileParser(file)
+
+        words = parser.words
         length = len(words)
-        print(length)
+
+        self.word_count = length
+        self.line_count = len(parser.lines)
 
         self.data = dict()
 
