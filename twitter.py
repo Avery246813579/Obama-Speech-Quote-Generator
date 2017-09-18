@@ -8,8 +8,6 @@ consumer_secret = os.environ.get('TWITTER_CONSUMER_SECRET')
 access_token = os.environ.get('TWITTER_ACCESS_TOKEN')
 access_token_secret = os.environ.get('TWITTER_ACCESS_TOKEN_SECRET')
 
-print(consumer_key, consumer_secret, access_token, access_token_secret)
-
 from requests_oauthlib import OAuth1Session
 
 session = OAuth1Session(consumer_key,

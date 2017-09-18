@@ -65,7 +65,7 @@ class MarkovModel:
 
             to_return += word
 
-        return to_return[1:]
+        return to_return[1:].capitalize()
 
     def __str__(self):
         return str()
@@ -77,8 +77,5 @@ if __name__ == '__main__':
     print("Booted")
     print(model.generate_sentence(20))
     print("Booted")
-    print(model.generate_sentence(20))
-    print(model.generate_sentence(20))
-    print(model.generate_sentence(20))
     print(model.generate_sentence(20))
 

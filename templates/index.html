@@ -9,22 +9,49 @@
 
 <body>
 <div id="wrapper">
-    <div id="navbar">
-        Tets
+    <div id="navbar" style="margin: auto; text-align: center; padding: 3px;">
+        <img src="/static/images/wh_logo_seal_mobile.png" style="max-height: 50px;">
     </div>
 
-    <div id="sentence">{{ sentence }}</div>
+    <img src="/static/images/last_hero3_4.jpg" style="max-width: 100%;">
+
+    <div id="quote">
+        <div class="header">
+            Yes, we did. Yes, we can.
+        </div>
+
+        <div class="text">
+            <div id="sentence">
+                "{{ sentence }}"
+            </div>
+
+            - President Barack Obama
+        </div>
+
+        <div class="buttons">
+            <a href='#' onclick="refreshSentence()" class='button'>Generate a new quote</a>
+            <a href='#' onclick="tweet()" class='button'>Tweet this quote</a>
+        </div>
+    </div>
+
+    <div id="about">
+        <div class="header">
+            AN IN-DEPTH LOOK AT THIS PROJECT
+        </div>
+
+        <center>Coming</center>
+    </div>
 
     <div style="float: left">
         <input placeholder="Sentence Length" id="length">
-        <button class="myButton" onclick="refreshSentence()">New Sentence</button>
-        <button class="myButton" onclick="tweet()">Tweet</button>
     </div>
 </div>
 </body>
 
 <script src="/static/jquery-3.2.1.min.js"></script>
 <script>
+    var id = {{id}};
+
     function refreshSentence(){
         var length = document.getElementById('length');
 
@@ -40,7 +67,8 @@
             var text = document.getElementById('sentence');
 
             if (object['success'] === true){
-                text.innerHTML = object['data'];
+                text.innerHTML = '"' + object['data'] + '"';
+                id = object['id'];
             }else{
                 alert("Internal Error!");
             }
@@ -55,17 +83,18 @@
             method: "post",
             contentType: 'application/json',
             data: JSON.stringify({
-                tweet: "GRASS TASTE BAD"
+                tweet: id
             }),
             dataType: 'json',
         }).done(function(object) {
             var text = document.getElementById('sentence');
 
             if (object['success'] === true){
-                text.innerHTML = object['data'];
+                alert("Tweet Successful");
             }else{
                 alert("Internal Error!");
             }
         });
     }
+
 </script>

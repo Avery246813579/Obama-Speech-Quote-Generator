@@ -8,16 +8,25 @@ import MapGram
 import twitter
 
 model = MapGram.MarkovModel("test_data.txt", 3)
+tweets = []
+
 
 @app.route('/tweet', methods=['POST'])
 def tweet():
     body = json.loads(request.data)
 
-    twitter.tweet(body['tweet'])
+    # noinspection PyBroadException
+    try:
+        tweet_value = tweets[body['tweet']]
+        twitter.tweet(tweet_value)
 
-    return jsonify({
-        "success": True
-    })
+        return jsonify({
+            "success": True
+        })
+    except Exception as e:
+        return jsonify({
+            "success": False
+        })
 
 
 @app.route('/new', methods=['POST'])
@@ -28,16 +37,18 @@ def new_tweet():
 
     sentence = None
     if words is None:
-        sentence = model.generate_sentence(random.randint(0, 25))
+        sentence = model.generate_sentence(random.randint(10, 25))
     else:
         try:
             sentence = model.generate_sentence(int(words))
         except ValueError:
-            sentence = model.generate_sentence(random.randint(0, 25))
+            sentence = model.generate_sentence(random.randint(10, 25))
 
+    tweets.append(sentence)
     return jsonify({
         "success": True,
-        "data": sentence
+        "data": sentence,
+        "id": len(tweets) - 1
     })
 
 
@@ -47,14 +58,15 @@ def hello_world():
 
     sentence = None
     if words is None:
-        sentence = model.generate_sentence(random.randint(0, 25))
+        sentence = model.generate_sentence(random.randint(10, 25))
     else:
         try:
             sentence = model.generate_sentence(int(words))
         except TypeError:
-            sentence = model.generate_sentence(random.randint(0, 25))
+            sentence = model.generate_sentence(random.randint(10, 25))
 
-    return render_template('index.html', sentence=sentence, time=time.time())
+    tweets.append(sentence)
+    return render_template('index.html', sentence=sentence, id=len(tweets) - 1, time=time.time())
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
