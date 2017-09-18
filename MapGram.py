@@ -5,9 +5,10 @@ import random
 class MapGram:
     # Convert this dictionary to a Histogram
 
-    def __init__(self, file):
+    def __init__(self, file, order):
         words = Main.FileParser(file).words
         length = len(words)
+        print(length)
 
         self.data = dict()
 
@@ -16,7 +17,7 @@ class MapGram:
                 self.add(words[i], '-<NONE>-')
                 continue
 
-            self.add(words[i] + " " + words[i + 1] + " " + words[i + 2], words[i + 1] + " " + words[i + 2] + " " + words[i + 3])
+            self.add(' '.join(words[i: i + order]), ' '.join(words[i + 1: i + order + 1]))
 
         for key in self.data:
             self.data[key].calculate_percents()
@@ -37,8 +38,8 @@ class MapGram:
 
 
 class MarkovModel:
-    def __init__(self, corpus):
-        self.map_gram = MapGram(corpus)
+    def __init__(self, corpus, order):
+        self.map_gram = MapGram(corpus, order)
 
     def generate_sentence(self, length):
         to_return = ''
@@ -71,7 +72,7 @@ class MarkovModel:
 
 
 if __name__ == '__main__':
-    model = MarkovModel("test_data.txt")
+    model = MarkovModel("test_data.txt", 3)
 
     print("Booted")
     print(model.generate_sentence(20))

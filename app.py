@@ -7,7 +7,7 @@ import time
 import MapGram
 import twitter
 
-model = MapGram.MarkovModel("test_data.txt")
+model = MapGram.MarkovModel("test_data.txt", 3)
 
 @app.route('/tweet', methods=['POST'])
 def tweet():
