@@ -1,35 +1,13 @@
 import random
 
-__all__ = ['FileParser', 'Histogram']
-
-def randomSentence(letters):
-    file = open("/usr/share/dict/words", "r")
-
-    array = file.read().splitlines()
-    length = len(array)
-    to_return = ''
-
-    for i in range(letters):
-        to_return += array[random.randint(0, length) - 1] + " "
-
-    return to_return
+"""
+1. Code cleanup
+2. Start End
+3. Speed and Efficiency
+4. Hidden 
+"""
 
 
-class Generator:
-    def __init__(self, file):
-        self.file = FileParser(file)
-        self.histogram = Histogram(self.file.words)
-
-    def generate_sentence(self, length):
-        to_return = ''
-
-        for i in range(length):
-            to_return += self.histogram.random_word() + " "
-
-        return to_return
-
-
-# Parser to parse the words and lines from a text file
 class FileParser:
     def __init__(self, file):
         file = open(file, "r")
@@ -48,8 +26,12 @@ class Histogram:
 
         self.calculate_percents()
 
-    # Calculates the percentages a certain set of words occur and stres it at the third index in their respected array
+    def __len__(self):
+        return self.raw
+
     def calculate_percents(self):
+        """ Calculates
+        """
         last = 0
 
         for i in range(len(self.data)):
@@ -60,7 +42,8 @@ class Histogram:
 
             last += self.data[i][0] / self.raw * len(self.data[i][1])
 
-    # Adds an element to the histogram
+    # UNiuque me
+
     def add(self, key):
         self.raw += 1
         length = len(self.data)
@@ -69,6 +52,7 @@ class Histogram:
             self.data.append([1, [key]])
             return
 
+        ## Zip staggered
         for i in range(length):
             if key in self.data[i][1]:
                 self.data[i][1].remove(key)
@@ -91,11 +75,7 @@ class Histogram:
         else:
             self.data.insert(0, [1, [key]])
 
-    # Get's the number of words in the histogram
-    def __len__(self):
-        return self.raw
 
-    # Get's a random word from the histogram
     def random_word(self):
         number = random.random()
 
@@ -103,7 +83,6 @@ class Histogram:
             if number < self.data[i][2]:
                 return self.data[i][1][random.randint(0, len(self.data[i][1]) - 1)]
 
-    # Gets the frequency of the word
     def frequency(self, key):
         if key in self.data:
             return self.data[key]

@@ -2,11 +2,11 @@ import random
 
 from Main import FileParser, Histogram
 
-__all__ = ['MapGram', 'MarkovModel']
 
+class Dictogram:
+    """
 
-class MapGram:
-    # Convert this dictionary to a Histogram
+    """
 
     def __init__(self, file, order):
         parser = FileParser(file)
@@ -21,7 +21,7 @@ class MapGram:
 
         for i in range(length):
             if i > length - 4:
-                self.add(words[i], '-<NONE>-')
+                self.add(words[i], '[NONE]')
                 continue
 
             self.add(' '.join(words[i: i + order]), ' '.join(words[i + 1: i + order + 1]))
@@ -46,7 +46,7 @@ class MapGram:
 
 class MarkovModel:
     def __init__(self, corpus, order):
-        self.map_gram = MapGram(corpus, order)
+        self.map_gram = Dictogram(corpus, order)
 
     def generate_sentence(self, length):
         to_return = ''
@@ -62,7 +62,7 @@ class MarkovModel:
             else:
                 word = element.random_word()
 
-                if word == "-<NONE>-":
+                if word == "[NONE]":
                     word = self.map_gram.random_key()
                     element = self.map_gram.data[word]
                     word = ". " + word.split(" ")[0]
@@ -79,7 +79,7 @@ class MarkovModel:
 
 
 if __name__ == '__main__':
-    model = MarkovModel("../static/test_data.txt", 3)
+    model = MarkovModel("static/test_data.txt", 3)
 
     print("Booted")
     print(model.generate_sentence(20))

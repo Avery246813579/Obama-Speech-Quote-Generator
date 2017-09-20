@@ -3,10 +3,10 @@ import random
 import os
 import time
 
-import MapGram, twitter
+import Dictogram, twitter
 app = Flask(__name__)
 
-model = MapGram.MarkovModel("static/test_data.txt", 3)
+model = Dictogram.MarkovModel("static/test_data.txt", 3)
 tweets = []
 
 @app.route('/tweet', methods=['POST'])
