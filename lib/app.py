@@ -65,7 +65,7 @@ def hello_world():
             sentence = model.generate_sentence(random.randint(10, 25))
 
     tweets.append(sentence)
-    return render_template('index.html', sentence=sentence, id=len(tweets) - 1, time=time.time(),
+    return render_template('index.html', sentence=sentence, id="**/" + str(len(tweets) - 1) + "/**", time=time.time(),
                            words=model.map_gram.word_count, lines=model.map_gram.line_count)
 
 if __name__ == '__main__':

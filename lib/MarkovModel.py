@@ -2,6 +2,10 @@ from Dictogram import Dictogram
 
 
 class MarkovModel:
+    """ Basically a Markov Chain that generates sentences """
+
+    # TODO: Make sure sentence does not stop to soon
+
     def __init__(self, corpus, order):
         self.map_gram = Dictogram(corpus, order)
 
@@ -9,7 +13,7 @@ class MarkovModel:
         to_return = ''
 
         element = None
-        for i in range(length):
+        for i in range(100):
             word = None
 
             if element is None:
@@ -26,6 +30,10 @@ class MarkovModel:
                 else:
                     element = self.map_gram.data[word]
                     word = " " + word.split(" ")[0]
+
+            if word == " [NONE]":
+                to_return += "."
+                break
 
             to_return += word
 

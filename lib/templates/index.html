@@ -5,7 +5,7 @@
     <title>Silicon Valley</title>
     <!--<link rel=stylesheet type=text/css href="/static/style.css?cache={{time}}">-->
     <link rel=stylesheet type=text/css href="/static/style.css?cache={{time}}">
-    <link rel="shortcut icon" href="/static/images/favicon.ico" />
+    <link rel="shortcut icon" href="/static/images/favicon.ico"/>
 </head>
 
 <body>
@@ -40,8 +40,12 @@
             AN IN-DEPTH LOOK AT THIS PROJECT
         </div>
         <br>
-        <center><a href="https://github.com/Avery246813579/Obama-Speech-Quote-Generator">This project</a> was made by <a href="https://www.linkedin.com/in/avery-durrant-676402148/">Avery Durrant</a> using Markov Chains.</center>
-        <center>The Corpus I used was has {{lines}} lines of text and {{words}} words. It was taken from over 200 of Barack Obama's Speeches.</center>
+        <center><a href="https://github.com/Avery246813579/Obama-Speech-Quote-Generator">This project</a> was made by <a
+                href="https://www.linkedin.com/in/avery-durrant-676402148/">Avery Durrant</a> using Markov Chains.
+        </center>
+        <center>The Corpus I used was has {{lines}} lines of text and {{words}} words. It was taken from over 200 of
+            Barack Obama's Speeches.
+        </center>
     </div>
 
     <div style="float: left">
@@ -52,9 +56,10 @@
 
 <script src="/static/jquery-3.2.1.min.js"></script>
 <script>
-    var id = {{id}};
+    var id = 0;
+    /**id = {{id}}**/
 
-    function refreshSentence(){
+    function refreshSentence() {
         var length = document.getElementById('length');
 
         $.ajax({
@@ -65,19 +70,19 @@
                 words: length.value
             }),
             dataType: 'json',
-        }).done(function(object) {
+        }).done(function (object) {
             var text = document.getElementById('sentence');
 
-            if (object['success'] === true){
+            if (object['success'] === true) {
                 text.innerHTML = '"' + object['data'] + '"';
                 id = object['id'];
-            }else{
+            } else {
                 alert("Internal Error!");
             }
         });
     }
 
-    function tweet(){
+    function tweet() {
         var length = document.getElementById('length');
 
         $.ajax({
@@ -88,12 +93,12 @@
                 tweet: id
             }),
             dataType: 'json',
-        }).done(function(object) {
+        }).done(function (object) {
             var text = document.getElementById('sentence');
 
-            if (object['success'] === true){
+            if (object['success'] === true) {
                 alert("Tweet Successful");
-            }else{
+            } else {
                 alert("Internal Error!");
             }
         });

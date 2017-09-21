@@ -12,6 +12,9 @@ class Histogram:
      2: The chance we will pick this number based on the last numbers
      """
 
+    # TODO: Try flipping the nodes so that the greater number of occurrencs are lower indexes
+    # TODO: Try to stagger the update using a staggered zip
+
     def __init__(self):
         """ Initialize the data """
         self.nodes = []
@@ -26,7 +29,10 @@ class Histogram:
         return str(self.nodes)
 
     def calculate_percents(self):
-        """ Calculate the chance that a list of numbers will come up in relation to the whole set of words. """
+        """ Calculate the chance that a list of numbers will come up in relation to the whole set of words. We use
+         a range to make it easier later down the line and make generating words much faster and more efficient.
+
+         """
         last_percent = 0
         word_count = self.word_count
 
@@ -54,40 +60,58 @@ class Histogram:
         self.word_count += 1
         length = len(self.nodes)
 
+        # If we have no data. Let's just create a new node.
         if length < 1:
             self.nodes.append([1, [word]])
             return
 
-        ## Zip staggered
         for i in range(length):
-            if word in self.nodes[i][1]:
-                self.nodes[i][1].remove(word)
+            current_node = self.nodes[i]
+            words = current_node[1]
 
+            # If our word is in the current node. Remove it then check more things.
+            if word in words:
+                words.remove(word)
+
+                # If there are no following nodes. We are the greatest node and can just add a new node
                 if i > length - 2:
-                    self.nodes.append([self.nodes[i][0] + 1, [word]])
+                    self.nodes.append([current_node[0] + 1, [word]])
                 else:
-                    if self.nodes[i + 1][0] == self.nodes[i][0] + 1:
-                        self.nodes[i + 1][1].append(word)
-                    else:
-                        self.nodes.insert(i + 1, [self.nodes[i][0] + 1, [word]])
+                    next_node = self.nodes[i + 1]
 
-                if len(self.nodes[i][1]) < 1:
+                    # If the next nodes occurrences is equal to one more then the current node. We add our word to the
+                    # next node. If not, then we create a new node there.
+                    if next_node[0] == current_node[0] + 1:
+                        next_node[1].append(word)
+                    else:
+                        self.nodes.insert(i + 1, [current_node[0] + 1, [word]])
+
+                # If there are no words left in this node. We delete the node.
+                if len(words) < 1:
                     del self.nodes[i]
 
                 return
 
+        # We check if the first nodes occurrences is 1. If it is we add our word. If not, we create a new node that
+        # the occurrences is one
         if self.nodes[0][0] == 1:
             self.nodes[0][1].append(word)
         else:
             self.nodes.insert(0, [1, [word]])
 
     def random_word(self):
+        """ Gets a random word from the histogram
+
+        :return:    The random word
+        """
+
         number = random.random()
-
         for i in range(len(self.nodes)):
-            if number < self.nodes[i][2]:
-                return self.nodes[i][1][random.randint(0, len(self.nodes[i][1]) - 1)]
 
-    def frequency(self, key):
-        if key in self.nodes:
-            return self.nodes[key]
+            node = self.nodes[i]
+            frequency = node[2]
+
+            # If the number is greater then the percentage we calculated before, then this is the random node we want.
+            # Then we get a random word from the node's second index which is the list of words
+            if number < frequency:
+                return node[1][random.randint(0, len(node[1]) - 1)]
