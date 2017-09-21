@@ -8,7 +8,7 @@ class Histogram:
      a respected number of word occurrences. The node has three values at the indexes 0, 1, 2.
 
      0: The number of occurrences
-     1: The words that occur (0) amount of times
+     1: A list of words that occur (0) amount of times
      2: The chance we will pick this number based on the last numbers
      """
 
@@ -27,26 +27,6 @@ class Histogram:
     def __str__(self):
         """ THe string representation of the nodes """
         return str(self.nodes)
-
-    def calculate_percents(self):
-        """ Calculate the chance that a list of numbers will come up in relation to the whole set of words. We use
-         a range to make it easier later down the line and make generating words much faster and more efficient.
-
-         """
-        last_percent = 0
-        word_count = self.word_count
-
-        for i in range(len(self.nodes)):
-            current_node = self.nodes[i]
-
-            # If we already have calculated the data before just update the number. If not, append the percent to the
-            # current node.
-            if len(self.nodes[i]) > 2:
-                current_node[2] = last_percent + current_node[0] * len(current_node[1]) / word_count
-            else:
-                current_node.append(last_percent + current_node[0] * len(current_node[1]) / word_count)
-
-                last_percent += current_node[0] / word_count * len(current_node[1])
 
     # UNiuque me
 
@@ -106,12 +86,34 @@ class Histogram:
         """
 
         number = random.random()
+        word_count = self.word_count
+        last_percent= 0
         for i in range(len(self.nodes)):
 
             node = self.nodes[i]
-            frequency = node[2]
+            frequency = last_percent + node[0] * len(node[1]) / word_count
 
             # If the number is greater then the percentage we calculated before, then this is the random node we want.
             # Then we get a random word from the node's second index which is the list of words
             if number < frequency:
                 return node[1][random.randint(0, len(node[1]) - 1)]
+
+
+if __name__ == "__main__":
+    data = ['one', 'fish', 'two', 'fish', 'red', 'fish', 'blue', 'fish']
+
+    gram = Histogram()
+    for word in data:
+        gram.update_word(word)
+
+    dd = {}
+
+    for i in range(10000):
+        letter = gram.random_word()
+
+        if letter in dd:
+            dd[letter] += 1
+        else:
+            dd[letter] = 1
+
+    print(dd)

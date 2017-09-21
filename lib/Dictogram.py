@@ -27,9 +27,6 @@ class Dictogram:
 
             self.add(' '.join(words[i: i + order]), ' '.join(words[i + 1: i + order + 1]))
 
-        for key in self.data:
-            self.data[key].calculate_percents()
-
     def add(self, dta, value):
         if dta not in self.data:
             self.data[dta] = Histogram()
