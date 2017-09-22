@@ -8,7 +8,7 @@ import twitter
 app = Flask(__name__)
 
 conn = psycopg2.connect("dbname=dds7q3a5dl5c45 user=edksigbbpxnyrh password=" +
-                        os.environ.get('DATABASE_PASSWORD') + " host=" + os.environ.get('DATABASE_URL'))
+                        os.environ.get('DATABASE_PASSWORD') + " host=" + os.environ.get('DATABASE_HOST'))
 
 from MarkovModel import MarkovModel
 model = MarkovModel("lib/static/test_data.txt", 3)
