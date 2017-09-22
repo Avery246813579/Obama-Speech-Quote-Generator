@@ -2,10 +2,13 @@ from flask import Flask, request, jsonify, render_template, json
 import random
 import os
 import time
+from flask.ext.sqlalchemy import SQLAlchemy
 
 from MarkovModel import MarkovModel
 import twitter
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+db = SQLAlchemy(app)
 
 model = MarkovModel("lib/static/test_data.txt", 3)
 tweets = []
