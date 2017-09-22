@@ -32,6 +32,7 @@
         <div class="buttons">
             <a href='#' onclick="refreshSentence()" class='button'>Generate a new quote</a>
             <a href='#' onclick="tweet()" class='button'>Tweet this quote</a>
+            <a href='#' onclick="favorite()" class='button'>Favorite this quote</a>
         </div>
     </div>
 
@@ -46,6 +47,13 @@
         <center>The Corpus I used was has {{lines}} lines of text and {{words}} words. It was taken from over 200 of
             Barack Obama's Speeches.
         </center>
+
+        <div>
+            Favorites:
+        </div>
+        <div id="favorites">
+
+        </div>
     </div>
 
     <div style="float: left">
@@ -56,8 +64,9 @@
 
 <script src="/static/jquery-3.2.1.min.js"></script>
 <script>
-    var id = 0;
-    /**id = {{id}}**/
+    var id = 0, favorites = [];
+
+    /**{{id}}**/
 
     function refreshSentence() {
         var length = document.getElementById('length');
@@ -92,7 +101,7 @@
             data: JSON.stringify({
                 tweet: id
             }),
-            dataType: 'json',
+            dataType: 'json'
         }).done(function (object) {
             var text = document.getElementById('sentence');
 
@@ -103,5 +112,46 @@
             }
         });
     }
+
+
+    function favorite() {
+        var length = document.getElementById('length');
+
+        $.ajax({
+            url: "favorite_tweet",
+            method: "post",
+            contentType: 'application/json',
+            data: JSON.stringify({
+                tweet: id
+            }),
+            dataType: 'json'
+        }).done(function (object) {
+            var text = document.getElementById('favorites');
+
+            if (object['success'] === true) {
+                alert("Tweet favorited");
+
+                text.innerHTML += "- " + object['data'] + "<br>"
+            } else {
+                alert("Tweet already favorited");
+            }
+        });
+    }
+
+    $.ajax({
+        url: "favorite_tweets",
+        method: "GET"
+    }).done(function (object) {
+        var text = document.getElementById('favorites');
+
+        if (object['success'] === true) {
+            for (var i = 0; i < object.data.length; i++) {
+                text.innerHTML += "- " + object.data[i] + "<br>"
+            }
+        } else {
+            text.innerHTML = "INTERNAL ERROR!"
+        }
+    });
+
 
 </script>

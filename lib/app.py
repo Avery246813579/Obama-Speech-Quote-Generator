@@ -2,32 +2,27 @@ from flask import Flask, request, jsonify, render_template, json
 import random
 import os
 import time
-from flask_sqlalchemy import SQLAlchemy
-
+import psycopg2
 import twitter
+
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+
+conn = psycopg2.connect("dbname=dds7q3a5dl5c45 user=edksigbbpxnyrh password=" +
+                        os.environ.get('DATABASE_PASSWORD') + " host=" + os.environ.get('DATABASE_URL'))
 
 from MarkovModel import MarkovModel
 model = MarkovModel("lib/static/test_data.txt", 3)
 tweets = []
 
+cur = conn.cursor()
+cur.execute("SELECT * FROM Tweets;")
+favorites_raw = list(cur.fetchall())
+favorites = []
 
-class Tweet(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    value = db.Column(db.String(250))
+for i in range(len(favorites_raw)):
+    favorites.append(favorites_raw[i][1])
 
-    def __init__(self, name):
-        self.name = name
-
-    def __repr__(self):
-        return '<Name %r>' % self.name
-
-
-db.create_all()
-
+cur.close()
 
 @app.route('/tweet', methods=['POST'])
 def tweet():
@@ -45,6 +40,53 @@ def tweet():
         return jsonify({
             "success": False
         })
+
+
+# TODO: Check if tweet was already tweeted
+
+@app.route('/favorite_tweet', methods=['POST'])
+def favorite_tweet():
+    body = json.loads(request.data)
+
+    # noinspection PyBroadException
+    try:
+        tweet_value = tweets[body['tweet']]
+        cur = conn.cursor()
+
+        cur.execute("SELECT * FROM Tweets WHERE content='%s';" % (tweet_value))
+
+        if len(cur.fetchall()) > 0:
+            return jsonify({
+                "success": False,
+                "message": "Already exists"
+            })
+
+        favorites.append(tweet_value)
+        cur.execute("INSERT INTO Tweets (content) VALUES (%s);" % ("'" + tweet_value + "'"))
+
+        conn.commit()
+        cur.close()
+
+        return jsonify({
+            "success": True,
+            "data": tweet_value
+        })
+    except Exception as e:
+        print(e)
+        return jsonify({
+            "success": False,
+            "message": "Can't pasrse"
+        })
+
+
+
+
+@app.route('/favorite_tweets', methods=['GET'])
+def favorite_tweets():
+    return jsonify({
+        "success": True,
+        "data": favorites
+    })
 
 
 @app.route('/new', methods=['POST'])
@@ -84,7 +126,8 @@ def hello_world():
             sentence = model.generate_sentence(random.randint(10, 25))
 
     tweets.append(sentence)
-    return render_template('index.html', sentence=sentence, id="**/" + str(len(tweets) - 1) + "/**", time=time.time(),
+    print(favorites)
+    return render_template('index.html', sentence=sentence, id="**/id =" + str(len(tweets) - 1) + "/**", time=time.time(),
                            words=model.map_gram.word_count, lines=model.map_gram.line_count)
 
 if __name__ == '__main__':
