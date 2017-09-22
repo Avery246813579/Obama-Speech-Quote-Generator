@@ -21,15 +21,15 @@ class MarkovModel:
                 element = self.map_gram.data[word]
                 word = " " + word.split(" ")[0]
             else:
-                word = element.random_word()
+                current_word = element.random_word()
 
-                if word == "[NONE]":
-                    word = self.map_gram.random_key()
-                    element = self.map_gram.data[word]
-                    word = ". " + word.split(" ")[0]
+                if current_word == "[NONE]":
+                    current_word = self.map_gram.random_key()
+                    element = self.map_gram.data[current_word]
+                    word = ". " + current_word.split(" ")[0]
                 else:
-                    element = self.map_gram.data[word]
-                    word = " " + word.split(" ")[0]
+                    element = self.map_gram.data[current_word]
+                    word = " " + current_word.split(" ")[0]
 
             if word == " [NONE]":
                 to_return += "."

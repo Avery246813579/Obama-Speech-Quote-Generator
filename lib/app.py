@@ -2,16 +2,32 @@ from flask import Flask, request, jsonify, render_template, json
 import random
 import os
 import time
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 
-from MarkovModel import MarkovModel
 import twitter
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
+from MarkovModel import MarkovModel
 model = MarkovModel("lib/static/test_data.txt", 3)
 tweets = []
+
+
+class Tweet(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.String(250))
+
+    def __init__(self, name):
+        self.name = name
+
+    def __repr__(self):
+        return '<Name %r>' % self.name
+
+
+db.create_all()
+
 
 @app.route('/tweet', methods=['POST'])
 def tweet():

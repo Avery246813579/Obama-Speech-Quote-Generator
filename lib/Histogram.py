@@ -87,9 +87,10 @@ class Histogram:
 
         number = random.random()
         word_count = self.word_count
-        last_percent= 0
+        last_percent = 0
         for node in self.nodes:
             frequency = last_percent + node[0] * len(node[1]) / word_count
+            last_percent = frequency
 
             # If the number is greater then the percentage we calculated before, then this is the random node we want.
             # Then we get a random word from the node's second index which is the list of words
