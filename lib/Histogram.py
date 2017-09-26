@@ -1,7 +1,7 @@
 import random
 
 
-class HistogramCount:
+class HistogramWithCount:
     """ Histogram is a class to store types and tokens
 
      We store all our data in an array of arrays. The internal arrays we will be calling nodes. Each node represents
@@ -23,8 +23,6 @@ class HistogramCount:
     def __str__(self):
         """ THe string representation of the nodes """
         return str(self.nodes)
-
-    # UNiuque me
 
     def update_word(self, word):
         """ If the word is already in the histogram we will update the number of times the word occurs. If not then
@@ -113,21 +111,19 @@ class Histogram:
         """ THe string representation of the nodes """
         return str(self.nodes)
 
-    # UNiuque me
-
-    def update_word(self, word):
+    def update_word(self, current_word):
         """ If the word is already in the histogram we will update the number of times the word occurs. If not then
         we insert it into our nodes
 
-        :param word:     The word we want update in the data set
+        :param current_word:     The word we want update in the data set
         """
 
         self.word_count += 1
 
-        if word in self.nodes:
-            self.nodes[word] += 1
+        if current_word in self.nodes:
+            self.nodes[current_word] += 1
         else:
-            self.nodes[word] = 1
+            self.nodes[current_word] = 1
 
     def random_word(self):
         """ Gets a random word from the histogram
@@ -135,19 +131,19 @@ class Histogram:
         :return:    The random word
         """
 
-        number = random.random()
-        word_count = self.word_count
+        random_range = random.random()
+        total_word_count = self.word_count
         last_percent = 0
 
-        # Go threw all our words checking if the one is coming up
+        # Go through all our words checking if the one is coming up
         for current_word in self.nodes:
             word_occurrences = self.nodes[current_word]
 
             # We get the frequency of the word
-            last_percent = frequency = last_percent + word_occurrences / word_count
+            last_percent = frequency = last_percent + word_occurrences / total_word_count
 
             # If the number is greater then the percentage we calculated before, then this is the random node we want.
-            if number < frequency:
+            if random_range < frequency:
                 return current_word
 
 

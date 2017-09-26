@@ -1,9 +1,10 @@
-from flask import Flask, request, jsonify, render_template, json
-import random
 import os
 import time
+
 import psycopg2
-import twitter
+from flask import Flask, request, jsonify, render_template, json
+
+from example import twitter
 
 app = Flask(__name__)
 

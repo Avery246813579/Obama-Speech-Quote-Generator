@@ -2,6 +2,7 @@ import random
 
 from Histogram import Histogram
 from FileParser import FileParser
+import collections
 
 
 class Dictogram:
@@ -21,33 +22,33 @@ class Dictogram:
 
         parser = FileParser(file)
         words = parser.words
-        word_length = len(words)
+        words_length = len(words)
 
         # Used to find the start of sentences
         self.sentence_ends = []
 
-        self.word_count = word_length
+        self.word_count = words_length
         self.line_count = len(parser.lines)
         self.data = dict()
 
         # We loop through all our words and if it has occurred we add the following word to a histogram. If it has not
         # occurred we construct a new histogram
-        for i in range(word_length):
+        for i in range(words_length):
             # We need to add [NONE] characters to the end of the word list because there are no words (or phrases in
             # order > 1 case) left to follow
-            if i > word_length - (order + 1):
+            if i > words_length - (order + 1):
                 self.add(words[i], '[NONE]')
                 continue
 
-            key = ' '.join(words[i: i + order])
-            value = ' '.join(words[i + 1: i + order + 1])
+            pre_window = ' '.join(words[i: i + order])
+            window = ' '.join(words[i + 1: i + order + 1])
 
             # If the word is the sentence end token, we add this key to a end key list
             if words[i] == "[NONE]":
-                self.sentence_ends.append(key)
+                self.sentence_ends.append(pre_window)
 
             # Add current data to our Dictogram
-            self.add(key, value)
+            self.add(pre_window, window)
 
     def random_start(self):
         """ Finds a random start to our sentence using the end keys list.
@@ -78,3 +79,16 @@ class Dictogram:
 
     def __str__(self):
         return str(self.data)
+
+
+if __name__ == "__main__":
+    numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+    test = collections.deque(numbers[0: 3])
+
+    for _ in range(3, len(numbers)):
+        test.popleft()
+        test.append()
+
+    print("HI", test)
+

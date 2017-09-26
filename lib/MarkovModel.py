@@ -58,10 +58,6 @@ class MarkovModel:
         return generated_sentence.capitalize().replace("[none]", "")
 
 
-def __str__(self):
-    return str()
-
-
 if __name__ == '__main__':
     model = MarkovModel("../public/test_data.txt", 3)
 

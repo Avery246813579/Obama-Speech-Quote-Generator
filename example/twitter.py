@@ -25,7 +25,7 @@ def tweet(text):
     :param text:    The text we want to tweet
     :return:        The tweet response
     """
-    resp = session.post(url, { 'status': text })
+    resp = session.post(url, {'status': text})
     return resp.text
 
 
