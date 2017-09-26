@@ -1,7 +1,7 @@
 import random
 
 
-class Histogram:
+class HistogramCount:
     """ Histogram is a class to store types and tokens
 
      We store all our data in an array of arrays. The internal arrays we will be calling nodes. Each node represents
@@ -10,9 +10,6 @@ class Histogram:
      0: The number of occurrences
      1: A list of words that occur (0) amount of times
      """
-
-    # TODO: Try flipping the nodes so that the greater number of occurrencs are lower indexes
-    # TODO: Try to stagger the update using a staggered zip
 
     def __init__(self):
         """ Initialize the data """
@@ -94,6 +91,64 @@ class Histogram:
             # Then we get a random word from the node's second index which is the list of words
             if number < frequency:
                 return node[1][random.randint(0, len(node[1]) - 1)]
+
+
+class Histogram:
+    """ Histogram is a class to store types and tokens
+
+     We store all our data in a dictionary. Our key is the current word or phrase, and the value is the number of
+     occurrences for that word.
+     """
+
+    def __init__(self):
+        """ Initialize the data """
+        self.nodes = {}
+        self.word_count = 0
+
+    def __len__(self):
+        """ Gets the amount of words in the data set. Not types! """
+        return self.word_count
+
+    def __str__(self):
+        """ THe string representation of the nodes """
+        return str(self.nodes)
+
+    # UNiuque me
+
+    def update_word(self, word):
+        """ If the word is already in the histogram we will update the number of times the word occurs. If not then
+        we insert it into our nodes
+
+        :param word:     The word we want update in the data set
+        """
+
+        self.word_count += 1
+
+        if word in self.nodes:
+            self.nodes[word] += 1
+        else:
+            self.nodes[word] = 1
+
+    def random_word(self):
+        """ Gets a random word from the histogram
+
+        :return:    The random word
+        """
+
+        number = random.random()
+        word_count = self.word_count
+        last_percent = 0
+
+        # Go threw all our words checking if the one is coming up
+        for current_word in self.nodes:
+            word_occurrences = self.nodes[current_word]
+
+            # We get the frequency of the word
+            last_percent = frequency = last_percent + word_occurrences / word_count
+
+            # If the number is greater then the percentage we calculated before, then this is the random node we want.
+            if number < frequency:
+                return current_word
 
 
 if __name__ == "__main__":
