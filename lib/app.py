@@ -98,12 +98,12 @@ def new_tweet():
 
     sentence = None
     if words is None:
-        sentence = model.generate_sentence(random.randint(10, 25))
+        sentence = model.generate_sentence()
     else:
         try:
-            sentence = model.generate_sentence(int(words))
+            sentence = model.generate_sentence()
         except ValueError:
-            sentence = model.generate_sentence(random.randint(10, 25))
+            sentence = model.generate_sentence()
 
     tweets.append(sentence)
     return jsonify({
@@ -119,17 +119,17 @@ def hello_world():
 
     sentence = None
     if words is None:
-        sentence = model.generate_sentence(random.randint(10, 25))
+        sentence = model.generate_sentence()
     else:
         try:
-            sentence = model.generate_sentence(int(words))
+            sentence = model.generate_sentence()
         except TypeError:
-            sentence = model.generate_sentence(random.randint(10, 25))
+            sentence = model.generate_sentence()
 
     tweets.append(sentence)
     print(favorites)
     return render_template('index.html', sentence=sentence, id="**/id =" + str(len(tweets) - 1) + "/**", time=time.time(),
-                           words=model.map_gram.word_count, lines=model.map_gram.line_count)
+                           words=model.dictogram.word_count, lines=model.dictogram.line_count)
 
 
 if __name__ == '__main__':
