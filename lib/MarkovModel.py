@@ -2,54 +2,70 @@ from Dictogram import Dictogram
 
 
 class MarkovModel:
-    """ Basically a Markov Chain that generates sentences """
+    """ Basically a Markov Chain that generates sentences. """
 
     def __init__(self, corpus, order):
-        self.map_gram = Dictogram(corpus, order)
+        """ Constructing the Markov Model
 
-    def generate_sentence(self, length):
-        to_return = ''
+        :param corpus:      The file location of the corpus we want to use
+        :param order:       The order for the Markov Chain
+        """
+        self.dictogram = Dictogram(corpus, order)
 
-        element = None
-        for i in range(100):
+    def generate_sentence(self):
+        """ Generates a sentence by first getting a sentence start then getting a random token following that word. We
+        then end the sentence once we get to an end token ([NONE]). If the sentence is too small or too long we try
+        generating a sentence gain.
+
+        :return:    Our uniquely generated sentence
+        """
+        generated_sentence = ''
+
+        # Our current element
+        element = self.dictogram.data[self.dictogram.random_start()]
+
+        # We could use a while loop, but we do this instead because we want to make sure we never get an infinite loop
+        for _ in range(100):
             word = None
 
-            if element is None:
-                element = self.map_gram.data[self.map_gram.random_start()]
+            # We get a new word or phrase
+            current_word = element.random_word()
 
-                word = element.random_word()
-                element = self.map_gram.data[word]
-                word = " " + word.split(" ")[0]
-            else:
-                current_word = element.random_word()
+            # We make the new word or phrase our current element
+            element = self.dictogram.data[current_word]
 
-                if current_word == "[NONE]":
-                    current_word = self.map_gram.random_key()
-                    element = self.map_gram.data[current_word]
-                    word = ". " + current_word.split(" ")[0]
-                else:
-                    element = self.map_gram.data[current_word]
-                    word = " " + current_word.split(" ")[0]
+            # We only use the first word in the phrase
+            word = " " + current_word.split(" ")[0]
 
+            # If the word is a sentence end, we finish off the sentence.
             if word == " [NONE]":
-                to_return += "."
+                generated_sentence += "."
                 break
 
-            to_return += word
+            # Add current word to our new sentence
+            generated_sentence += word
 
-        if len(to_return[1:]) > 140 or len(to_return[1:]) < 50:
-            return self.generate_sentence(length)
+        # Remove the extra space in front of the sentence
+        generated_sentence = generated_sentence[1:]
 
-        return to_return[1:].capitalize().replace("[none]", "")
+        sentence_length = len(generated_sentence)
 
-    def __str__(self):
-        return str()
+        # If our sentence is too short or long we return a new sentence
+        if sentence_length > 140 or sentence_length < 50:
+            return self.generate_sentence()
+
+        # Return our sentence and capitalize it. Also make sure there are no uncalled for None tokens
+        return generated_sentence.capitalize().replace("[none]", "")
+
+
+def __str__(self):
+    return str()
 
 
 if __name__ == '__main__':
     model = MarkovModel("../public/test_data.txt", 3)
 
     print("Booted")
-    print(model.generate_sentence(20))
-    print("Booted")
-    print(model.generate_sentence(20))
+
+    for i in range(100):
+        print(model.generate_sentence())

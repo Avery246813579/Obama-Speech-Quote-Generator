@@ -5,11 +5,10 @@ class Histogram:
     """ Histogram is a class to store types and tokens
 
      We store all our data in an array of arrays. The internal arrays we will be calling nodes. Each node represents
-     a respected number of word occurrences. The node has three values at the indexes 0, 1, 2.
+     a respected number of word occurrences. The node has three values at the indexes 0, 1.
 
      0: The number of occurrences
      1: A list of words that occur (0) amount of times
-     2: The chance we will pick this number based on the last numbers
      """
 
     # TODO: Try flipping the nodes so that the greater number of occurrencs are lower indexes
@@ -89,8 +88,7 @@ class Histogram:
         word_count = self.word_count
         last_percent = 0
         for node in self.nodes:
-            frequency = last_percent + node[0] * len(node[1]) / word_count
-            last_percent = frequency
+            last_percent = frequency = last_percent + node[0] * len(node[1]) / word_count
 
             # If the number is greater then the percentage we calculated before, then this is the random node we want.
             # Then we get a random word from the node's second index which is the list of words
