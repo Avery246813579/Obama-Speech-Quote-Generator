@@ -4,15 +4,16 @@ import time
 import psycopg2
 from flask import Flask, request, jsonify, render_template, json
 
-from example import twitter
+from twitter import *
+
 
 app = Flask(__name__)
 
 conn = psycopg2.connect("dbname=dds7q3a5dl5c45 user=edksigbbpxnyrh password=" +
                         os.environ.get('DATABASE_PASSWORD') + " host=" + os.environ.get('DATABASE_HOST'))
 
-from MarkovModel import MarkovModel
-model = MarkovModel("public/test_data.txt", 3)
+from lib.MarkovModel import MarkovModel
+model = MarkovModel("static/test_data.txt", 3)
 tweets = []
 
 cur = conn.cursor()
