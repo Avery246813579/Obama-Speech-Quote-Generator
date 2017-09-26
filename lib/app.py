@@ -11,10 +11,11 @@ conn = psycopg2.connect("dbname=dds7q3a5dl5c45 user=edksigbbpxnyrh password=" +
                         os.environ.get('DATABASE_PASSWORD') + " host=" + os.environ.get('DATABASE_HOST'))
 
 from MarkovModel import MarkovModel
-model = MarkovModel("lib/static/test_data.txt", 3)
+model = MarkovModel("public/test_data.txt", 2)
 tweets = []
 
 cur = conn.cursor()
+
 cur.execute("SELECT * FROM Tweets;")
 favorites_raw = list(cur.fetchall())
 favorites = []
@@ -129,6 +130,7 @@ def hello_world():
     print(favorites)
     return render_template('index.html', sentence=sentence, id="**/id =" + str(len(tweets) - 1) + "/**", time=time.time(),
                            words=model.map_gram.word_count, lines=model.map_gram.line_count)
+
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))

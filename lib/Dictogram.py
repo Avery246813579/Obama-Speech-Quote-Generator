@@ -15,6 +15,7 @@ class Dictogram:
         words = parser.words
         length = len(words)
 
+        self.sentence_ends = []
         self.word_count = length
         self.line_count = len(parser.lines)
 
@@ -25,7 +26,16 @@ class Dictogram:
                 self.add(words[i], '[NONE]')
                 continue
 
-            self.add(' '.join(words[i: i + order]), ' '.join(words[i + 1: i + order + 1]))
+            key = ' '.join(words[i: i + order])
+            value = ' '.join(words[i + 1: i + order + 1])
+
+            if words[i] == "[NONE]":
+                self.sentence_ends.append(key)
+
+            self.add(key, value)
+
+    def random_start(self):
+        return self.sentence_ends[random.randint(0, len(self.sentence_ends) - 1)]
 
     def add(self, dta, value):
         if dta not in self.data:
