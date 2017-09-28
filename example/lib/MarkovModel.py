@@ -59,7 +59,7 @@ class MarkovModel:
 
 
 if __name__ == '__main__':
-    model = MarkovModel("../public/test_data.txt", 3)
+    model = MarkovModel("example/static/test_data.txt", 3)
 
     print("Booted")
 

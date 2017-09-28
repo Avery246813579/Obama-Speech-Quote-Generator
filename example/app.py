@@ -13,7 +13,7 @@ conn = psycopg2.connect("dbname=dds7q3a5dl5c45 user=edksigbbpxnyrh password=" +
                         os.environ.get('DATABASE_PASSWORD') + " host=" + os.environ.get('DATABASE_HOST'))
 
 from lib.MarkovModel import MarkovModel
-model = MarkovModel("static/test_data.txt", 3)
+model = MarkovModel("example/static/test_data.txt", 3)
 tweets = []
 
 cur = conn.cursor()
