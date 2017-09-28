@@ -1,3 +1,0 @@
-# OSQG Distribution
-
-Coming Soon 
