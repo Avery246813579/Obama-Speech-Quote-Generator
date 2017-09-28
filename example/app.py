@@ -4,7 +4,7 @@ import time
 import psycopg2
 from flask import Flask, request, jsonify, render_template, json
 
-from twitter import *
+import twitter
 
 
 app = Flask(__name__)
