@@ -14,6 +14,5 @@ A light weight Markov Model implemented into python
 - Backoff Markov Chain or Uniqueness Counter. Reject if percent is too high
 - Make Developer Console that I can delete favorites or clear them.
 - Medium article. Something about percent same and rejecting that. 
-- Windows for queues
 
 - 

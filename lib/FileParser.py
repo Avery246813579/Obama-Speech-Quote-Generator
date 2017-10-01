@@ -16,7 +16,7 @@ class FileParser:
 
         # Goes through all the lines, cleans them, then splits it up into words and adds them to the words variable
         for line in self.lines:
-            self.words += self.clean_line(line).split()
+            self.words += line.split()
 
     @staticmethod
     def clean_line(line):

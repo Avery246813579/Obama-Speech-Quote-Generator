@@ -28,11 +28,11 @@ class MarkovModel:
 
         :return:    Our uniquely generated sentence
         """
-        generated_sentence = ''
 
         # Our current element
         window = deque(self.dictogram.random_start())
         element = self.dictogram.data[tuple(window)]
+        generated_sentence = ' '.join(window)
 
         # We could use a while loop, but we do this instead because we want to make sure we never get an infinite loop
         for _ in range(self.MAX_ITERATION_ATTEMPTS):
@@ -49,16 +49,12 @@ class MarkovModel:
             # We only use the first word in the phrase
             word = " " + current_word
 
-            # If the word is a sentence end, we finish off the sentence.
-            if word == " [NONE]":
-                generated_sentence += "."
-                break
-
             # Add current word to our new sentence
             generated_sentence += word
 
-        # Remove the extra space in front of the sentence
-        generated_sentence = generated_sentence[1:]
+            # If the word is a sentence end, we finish off the sentence.
+            if word[-1] == '.':
+                break
 
         sentence_length = len(generated_sentence)
 
@@ -67,7 +63,7 @@ class MarkovModel:
             return self.generate_sentence()
 
         # Return our sentence and capitalize it. Also make sure there are no uncalled for None tokens
-        return generated_sentence.capitalize().replace("[none]", "")
+        return generated_sentence
 
 
 if __name__ == '__main__':

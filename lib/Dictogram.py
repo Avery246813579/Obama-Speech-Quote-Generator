@@ -35,24 +35,18 @@ class Dictogram:
         # We loop through all our words and if it has occurred we add the following word to a histogram. If it has not
         # occurred we construct a new histogram
         for i in range(order, words_length - 1):
-            # We need to add [NONE] characters to the end of the word list because there are no words (or phrases in
-            # order > 1 case) left to follow
-            if i > words_length - (order + 1):
-                self.add(words[i], '[NONE]')
-                continue
-
-            # If the word is the sentence end token, we add this key to a end key list
-            if words[i] == "[NONE]":
-                self.sentence_ends.append(tuple(window))
+            current_word = words[i]
 
             # Add current data to our Dictogram
-            self.add(tuple(window), words[i])
-
-            # Remove the left number in the sequence
-            window.popleft()
+            self.add(tuple(window), current_word)
 
             # Add the next number in the sequence
-            window.append(words[i])
+            window.append(current_word)
+
+            # Remove the left number in the sequence
+            if window.popleft()[-1] == '.':
+                self.sentence_ends.append(tuple(window))
+
 
     def random_start(self):
         """ Finds a random start to our sentence using the end keys list.
@@ -96,4 +90,5 @@ if __name__ == "__main__":
         print(tuple(test))
 
     print("HI", test)
+    print("HI"[:-1])
 
