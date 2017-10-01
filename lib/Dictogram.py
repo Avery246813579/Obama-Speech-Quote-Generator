@@ -2,7 +2,7 @@ import random
 
 from Histogram import Histogram
 from FileParser import FileParser
-import collections
+from collections import deque
 
 
 class Dictogram:
@@ -23,6 +23,7 @@ class Dictogram:
         parser = FileParser(file)
         words = parser.words
         words_length = len(words)
+        window = deque(words[0: order])
 
         # Used to find the start of sentences
         self.sentence_ends = []
@@ -33,22 +34,25 @@ class Dictogram:
 
         # We loop through all our words and if it has occurred we add the following word to a histogram. If it has not
         # occurred we construct a new histogram
-        for i in range(words_length):
+        for i in range(order, words_length - 1):
             # We need to add [NONE] characters to the end of the word list because there are no words (or phrases in
             # order > 1 case) left to follow
             if i > words_length - (order + 1):
                 self.add(words[i], '[NONE]')
                 continue
 
-            pre_window = ' '.join(words[i: i + order])
-            window = ' '.join(words[i + 1: i + order + 1])
-
             # If the word is the sentence end token, we add this key to a end key list
             if words[i] == "[NONE]":
-                self.sentence_ends.append(pre_window)
+                self.sentence_ends.append(tuple(window))
 
             # Add current data to our Dictogram
-            self.add(pre_window, window)
+            self.add(tuple(window), words[i])
+
+            # Remove the left number in the sequence
+            window.popleft()
+
+            # Add the next number in the sequence
+            window.append(words[i])
 
     def random_start(self):
         """ Finds a random start to our sentence using the end keys list.
@@ -84,11 +88,12 @@ class Dictogram:
 if __name__ == "__main__":
     numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-    test = collections.deque(numbers[0: 3])
+    test = deque((numbers[0: 3]))
 
-    for _ in range(3, len(numbers)):
+    for i in range(3, len(numbers)):
         test.popleft()
-        test.append()
+        test.append(numbers[i])
+        print(tuple(test))
 
     print("HI", test)
 

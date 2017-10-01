@@ -9,7 +9,6 @@ A light weight Markov Model implemented into python
 
 - Naming
 - Remove coupling with Dictogram and MarkovModel. Change class to MarkovChain
-- Tuple instead of string
 - Move lib to be library components and examples to be actual Markov Model
 - Routing FOlder
 - Backoff Markov Chain or Uniqueness Counter. Reject if percent is too high

@@ -1,5 +1,5 @@
 from Dictogram import Dictogram
-
+from collections import deque
 
 class MarkovModel:
     """ Basically a Markov Chain that generates sentences. """
@@ -31,7 +31,8 @@ class MarkovModel:
         generated_sentence = ''
 
         # Our current element
-        element = self.dictogram.data[self.dictogram.random_start()]
+        window = deque(self.dictogram.random_start())
+        element = self.dictogram.data[tuple(window)]
 
         # We could use a while loop, but we do this instead because we want to make sure we never get an infinite loop
         for _ in range(self.MAX_ITERATION_ATTEMPTS):
@@ -41,10 +42,12 @@ class MarkovModel:
             current_word = element.random_word()
 
             # We make the new word or phrase our current element
-            element = self.dictogram.data[current_word]
+            window.popleft()
+            window.append(current_word)
+            element = self.dictogram.data[tuple(window)]
 
             # We only use the first word in the phrase
-            word = " " + current_word.split(" ")[0]
+            word = " " + current_word
 
             # If the word is a sentence end, we finish off the sentence.
             if word == " [NONE]":
@@ -68,7 +71,7 @@ class MarkovModel:
 
 
 if __name__ == '__main__':
-    model = MarkovModel("../public/test_data.txt", 3)
+    model = MarkovModel("static/test_data.txt", 3)
 
     print("Booted")
 
