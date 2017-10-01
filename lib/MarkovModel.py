@@ -4,6 +4,15 @@ from Dictogram import Dictogram
 class MarkovModel:
     """ Basically a Markov Chain that generates sentences. """
 
+    # Maximum amount of characters we allow our sentence to have
+    MAX_TWEET_LENGTH = 140
+
+    # Minimum amount of characters we allow our sentence to have
+    MIN_TWEET_LENGTH = 50
+
+    # Max amount of attempts we have to generate a new sentence
+    MAX_ITERATION_ATTEMPTS = 100
+
     def __init__(self, corpus, order):
         """ Constructing the Markov Model
 
@@ -25,7 +34,7 @@ class MarkovModel:
         element = self.dictogram.data[self.dictogram.random_start()]
 
         # We could use a while loop, but we do this instead because we want to make sure we never get an infinite loop
-        for _ in range(100):
+        for _ in range(self.MAX_ITERATION_ATTEMPTS):
             word = None
 
             # We get a new word or phrase
@@ -51,7 +60,7 @@ class MarkovModel:
         sentence_length = len(generated_sentence)
 
         # If our sentence is too short or long we return a new sentence
-        if sentence_length > 140 or sentence_length < 50:
+        if sentence_length > self.MAX_TWEET_LENGTH or sentence_length < self.MIN_TWEET_LENGTH:
             return self.generate_sentence()
 
         # Return our sentence and capitalize it. Also make sure there are no uncalled for None tokens
