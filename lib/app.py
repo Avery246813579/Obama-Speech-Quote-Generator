@@ -84,7 +84,7 @@ def favorite_tweet():
 
 
 @app.route('/favorite_tweets', methods=['GET'])
-def favorite_tweets():
+def get_favorite_tweets():
     return jsonify({
         "success": True,
         "data": favorites
@@ -92,7 +92,7 @@ def favorite_tweets():
 
 
 @app.route('/new', methods=['POST'])
-def new_tweet():
+def generate_new_tweet():
     body = json.loads(request.data)
 
     words = body['words']
@@ -115,7 +115,7 @@ def new_tweet():
 
 
 @app.route('/')
-def hello_world():
+def default_route():
     words = request.args.get('words')
 
     sentence = None
