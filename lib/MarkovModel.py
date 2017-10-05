@@ -1,5 +1,6 @@
 from Dictogram import Dictogram
 from collections import deque
+from FileParser import FileParser
 
 class MarkovModel:
     """ Basically a Markov Chain that generates sentences. """
@@ -19,7 +20,10 @@ class MarkovModel:
         :param corpus:      The file location of the corpus we want to use
         :param order:       The order for the Markov Chain
         """
-        self.dictogram = Dictogram(corpus, order)
+
+        parser = FileParser(corpus)
+        self.dictogram = Dictogram(parser.words, order)
+        # self.back = Dictogram(reversed(parser.words), ror)
 
     def generate_sentence(self):
         """ Generates a sentence by first getting a sentence start then getting a random token following that word. We
@@ -33,6 +37,10 @@ class MarkovModel:
         window = deque(self.dictogram.random_start())
         element = self.dictogram.data[tuple(window)]
         generated_sentence = ' '.join(window)
+
+        # If the window has a split
+        if '[SPLIT]' in generated_sentence:
+            return self.generate_sentence()
 
         # We could use a while loop, but we do this instead because we want to make sure we never get an infinite loop
         for _ in range(self.MAX_ITERATION_ATTEMPTS):
@@ -49,12 +57,13 @@ class MarkovModel:
             # We only use the first word in the phrase
             word = " " + current_word
 
+            # If the word is a sentence end, we finish off the sentence.
+            if current_word == '[SPLIT]':
+                generated_sentence += '.'
+                break
+
             # Add current word to our new sentence
             generated_sentence += word
-
-            # If the word is a sentence end, we finish off the sentence.
-            if word[-1] == '.':
-                break
 
         sentence_length = len(generated_sentence)
 

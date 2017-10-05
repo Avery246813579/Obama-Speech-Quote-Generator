@@ -7,6 +7,9 @@ A light weight Markov Model implemented into python
 
 ## Todo
 
+- Backwards Model
+
+- The Alan Davis Method
 - Remove coupling with Dictogram and MarkovModel. Change class to MarkovChain
 - Backoff Markov Chain or Uniqueness Counter. Reject if percent is too high
 - Routing FOlder

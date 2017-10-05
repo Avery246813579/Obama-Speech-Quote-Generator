@@ -13,23 +13,20 @@ class Dictogram:
     a word of phrase because of the order we are using). A value is the word or phrase following our current key.
      """
 
-    def __init__(self, file, order):
+    def __init__(self, words, order):
         """ Constructing the Dictogram
 
-        :param file:        The file location we want to read from (the corpus)
+        :param words:       The words you want to add (the corpus)
         :param order:       The Markov Chain order
         """
 
-        parser = FileParser(file)
-        words = parser.words
         words_length = len(words)
         window = deque(words[0: order])
 
         # Used to find the start of sentences
-        self.sentence_ends = []
+        self.sentence_ends = [tuple(window)]
 
         self.word_count = words_length
-        self.line_count = len(parser.lines)
         self.data = dict()
 
         # We loop through all our words and if it has occurred we add the following word to a histogram. If it has not
@@ -37,16 +34,27 @@ class Dictogram:
         for i in range(order, words_length - 1):
             current_word = words[i]
 
-            # Add current data to our Dictogram
-            self.add(tuple(window), current_word)
+            self.next_item(window, current_word)
 
-            # Add the next number in the sequence
-            window.append(current_word)
+    def next_item(self, window, word):
+        split = False
+        if word[-1] == '.':
+            word = word[:-1]
+            split = True
 
-            # Remove the left number in the sequence
-            if window.popleft()[-1] == '.':
-                self.sentence_ends.append(tuple(window))
+        # Add current data to our Dictogram
+        self.add(tuple(window), word)
 
+        # Add the next number in the sequence
+        window.append(word)
+
+        # Remove the left number in the sequence
+        if window.popleft() == '[SPLIT]':
+            self.sentence_ends.append(tuple(window))
+
+        # End of Word
+        if split:
+            self.next_item(window, '[SPLIT]')
 
     def random_start(self):
         """ Finds a random start to our sentence using the end keys list.
@@ -90,5 +98,5 @@ if __name__ == "__main__":
         print(tuple(test))
 
     print("HI", test)
-    print("HI"[:-1])
+    print("HI"[-1])
 
