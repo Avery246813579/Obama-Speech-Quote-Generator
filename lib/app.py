@@ -130,7 +130,7 @@ def default_route():
     tweets.append(sentence)
     print(favorites)
     return render_template('index.html', sentence=sentence, id="**/id =" + str(len(tweets) - 1) + "/**", time=time.time(),
-                           words=model.dictogram.word_count, lines=model.dictogram.line_count)
+                           words=model.dictogram.word_count, lines=len(model.parser.lines))
 
 
 if __name__ == '__main__':

@@ -21,8 +21,8 @@ class MarkovModel:
         :param order:       The order for the Markov Chain
         """
 
-        parser = FileParser(corpus)
-        self.dictogram = Dictogram(parser.words, order)
+        self.parser = FileParser(corpus)
+        self.dictogram = Dictogram(self.parser.words, order)
         # self.back = Dictogram(reversed(parser.words), ror)
 
     def generate_sentence(self):
