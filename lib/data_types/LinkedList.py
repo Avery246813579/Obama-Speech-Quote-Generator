@@ -11,7 +11,7 @@ class Node(object):
         self.next = None
 
     def __repr__(self):
-        """Return a string representation of this node"""
+        """Return a string rxepresentation of this node"""
         return 'Node({})'.format(repr(self.data))
 
 
@@ -61,50 +61,50 @@ class LinkedList(object):
 
     def append(self, item):
         """Insert the given item at the tail of this linked list"""
+        new_node = Node(item)
+
         if self.head is None:
-            self.head = Node(item)
-            self.tail = self.head
-            return
+            self.head = new_node
+        else:
+            self.tail.next = new_node
 
-        current = self.head
-
-        while True:
-            if current.next is None:
-                current.next = Node(item)
-                self.tail = current.next
-                break
-
-            current = current.next
+        self.tail = new_node
 
     def prepend(self, item):
         """Insert the given item at the head of this linked list"""
+        new_node = Node(item)
+
+        # If the Linked List is empty we set the head and tail to the new node 
         if self.head is None:
-            self.head = Node(item)
+            self.head = new_node
             self.tail = self.head
-        else:
-            tem = Node(item)
-            tem.next = self.head
-            self.head = tem
+        else: # Our Linked List is not empty. Set new nodes next to the previous head and set our new node as the head
+            new_node.next = self.head
+            self.head = new_node
 
     def delete(self, item):
         """Delete the given item from this linked list, or raise ValueError"""
         last = None
-        current = self.head
+        current_node = self.head
 
-        while current is not None:
-            if current.data == item:
-                if self.tail.data == item:
+        while current_node is not None:
+            # The current node is the ones we are looking for 
+            if current_node.data == item:
+                # Our tail is our current node
+                if self.tail == current_node:
                     self.tail = last
 
                 if last is None:
-                    self.head = current.next
+                    # If we are the head. We set the new head to the next value.
+                    self.head = current_node.next
                 else:
-                    last.next = current.next
+                    # We aint the head so we set the last nodes head to the next node (could be null. We don't care)
+                    last.next = current_node.next
 
-                return
+                return  # Stop checking. Don't return an error
 
-            last = current
-            current = current.next
+            last = current_node
+            current_node = current_node.next
 
         raise ValueError
 
