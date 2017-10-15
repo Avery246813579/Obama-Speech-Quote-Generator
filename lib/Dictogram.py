@@ -32,7 +32,7 @@ class Dictogram:
         # occurred we construct a new histogram
         for i in range(order, words_length - 1):
             current_word = words[i]
-
+            
             self.next_item(window, current_word)
 
     def next_item(self, window, word):
