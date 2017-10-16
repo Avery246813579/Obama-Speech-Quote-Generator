@@ -49,6 +49,11 @@ class MarkovModel:
             # We get a new word or phrase
             current_word = element.random_word()
 
+            # If the word is a sentence end, we finish off the sentence.
+            if current_word == '[SPLIT]':
+                generated_sentence += '.'
+                break
+
             # We make the new word or phrase our current element
             window.popleft()
             window.append(current_word)
@@ -56,11 +61,6 @@ class MarkovModel:
 
             # We only use the first word in the phrase
             word = " " + current_word
-
-            # If the word is a sentence end, we finish off the sentence.
-            if current_word == '[SPLIT]':
-                generated_sentence += '.'
-                break
 
             # Add current word to our new sentence
             generated_sentence += word

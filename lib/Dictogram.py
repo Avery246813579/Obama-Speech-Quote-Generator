@@ -24,7 +24,7 @@ class Dictogram:
         creating = False
 
         # Used to find the start of sentences
-        self.sentence_ends = [tuple(window)]
+        self.sentence_starts = [tuple(window)]
         self.backwards = backwards
 
         self.word_count = words_length
@@ -40,7 +40,7 @@ class Dictogram:
                 continue
 
             if creating:
-                self.sentence_ends.append(tuple(window))
+                self.sentence_starts.append(tuple(window))
                 creating = False
 
             if self.next_item(window, current_word):
@@ -62,7 +62,7 @@ class Dictogram:
 
         # Remove the left number in the sequence
         if window.popleft() == '[SPLIT]':
-            self.sentence_ends.append(tuple(window))
+            self.sentence_starts.append(tuple(window))
 
         # End of Word
         if split:
@@ -75,7 +75,7 @@ class Dictogram:
 
         :return:        A key to use in order to construct the start of a sentence
         """
-        return self.sentence_ends[random.randint(0, len(self.sentence_ends) - 1)]
+        return self.sentence_starts[random.randint(0, len(self.sentence_starts) - 1)]
 
     def add(self, key, value):
         """ Adds a key-value pair to the data set.
@@ -104,4 +104,4 @@ class Dictogram:
 if __name__ == "__main__":
     test_dict = Dictogram(['I', 'am', 'doing', 'good.', 'How', 'are', 'you.'], 2)
     print(str(test_dict))
-    print(str(test_dict.sentence_ends))
+    print(str(test_dict.sentence_starts))
