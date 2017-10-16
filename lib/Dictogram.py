@@ -1,7 +1,6 @@
 import random
 
 from Histogram import Histogram
-from FileParser import FileParser
 from collections import deque
 
 
@@ -13,7 +12,7 @@ class Dictogram:
     a word of phrase because of the order we are using). A value is the word or phrase following our current key.
      """
 
-    def __init__(self, words, order):
+    def __init__(self, words, order, backwords = False):
         """ Constructing the Dictogram
 
         :param words:       The words you want to add (the corpus)
@@ -33,7 +32,7 @@ class Dictogram:
         # occurred we construct a new histogram
         for i in range(order, words_length - 1):
             current_word = words[i]
-
+            
             self.next_item(window, current_word)
 
     def next_item(self, window, word):
@@ -88,15 +87,5 @@ class Dictogram:
 
 
 if __name__ == "__main__":
-    numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-
-    test = deque((numbers[0: 3]))
-
-    for i in range(3, len(numbers)):
-        test.popleft()
-        test.append(numbers[i])
-        print(tuple(test))
-
-    print("HI", test)
-    print("HI"[-1])
-
+    test_dict = Dictogram(list(reversed(['Hi', 'Mom', 'How', 'Are', 'You.', 'I', 'am', 'doing', 'Good.'])), 1, True)
+    print(str(test_dict))

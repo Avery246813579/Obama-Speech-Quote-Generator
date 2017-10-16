@@ -146,6 +146,9 @@ class Histogram:
             if random_range < frequency:
                 return current_word
 
+    def __repr__(self):
+        return str(self.nodes)
+
 
 if __name__ == "__main__":
     data = ['one', 'fish', 'two', 'fish', 'red', 'fish', 'blue', 'fish']
