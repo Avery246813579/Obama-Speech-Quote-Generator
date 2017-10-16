@@ -147,7 +147,7 @@ class Histogram:
                 return current_word
 
     def __repr__(self):
-        return str(self.nodes)
+        return "Histogram[" + str(self.nodes) + "]"
 
 
 if __name__ == "__main__":

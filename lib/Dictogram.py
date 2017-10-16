@@ -12,7 +12,7 @@ class Dictogram:
     a word of phrase because of the order we are using). A value is the word or phrase following our current key.
      """
 
-    def __init__(self, words, order, backwords = False):
+    def __init__(self, words, order, backwards=False):
         """ Constructing the Dictogram
 
         :param words:       The words you want to add (the corpus)
@@ -21,22 +21,35 @@ class Dictogram:
 
         words_length = len(words)
         window = deque(words[0: order])
+        creating = False
 
         # Used to find the start of sentences
         self.sentence_ends = [tuple(window)]
+        self.backwards = backwards
 
         self.word_count = words_length
         self.data = dict()
 
         # We loop through all our words and if it has occurred we add the following word to a histogram. If it has not
         # occurred we construct a new histogram
-        for i in range(order, words_length - 1):
+        for i in range(order, words_length):
             current_word = words[i]
-            
-            self.next_item(window, current_word)
+
+            if len(window) < order:
+                window.append(current_word)
+                continue
+
+            if creating:
+                self.sentence_ends.append(tuple(window))
+                creating = False
+
+            if self.next_item(window, current_word):
+                creating = True
+                window.clear()
 
     def next_item(self, window, word):
         split = False
+
         if word[-1] == '.':
             word = word[:-1]
             split = True
@@ -54,6 +67,8 @@ class Dictogram:
         # End of Word
         if split:
             self.next_item(window, '[SPLIT]')
+
+            return True
 
     def random_start(self):
         """ Finds a random start to our sentence using the end keys list.
@@ -87,5 +102,6 @@ class Dictogram:
 
 
 if __name__ == "__main__":
-    test_dict = Dictogram(list(reversed(['Hi', 'Mom', 'How', 'Are', 'You.', 'I', 'am', 'doing', 'Good.'])), 1, True)
+    test_dict = Dictogram(['I', 'am', 'doing', 'good.', 'How', 'are', 'you.'], 2)
     print(str(test_dict))
+    print(str(test_dict.sentence_ends))
