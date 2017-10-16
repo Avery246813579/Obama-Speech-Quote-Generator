@@ -22,7 +22,7 @@ class MarkovModel:
         """
 
         self.parser = FileParser(corpus)
-        self.dictogram = Dictogram(self.parser.words, order)
+        self.dictogram = Dictogram(list(reversed(self.parser.words)), order)
         # self.back = Dictogram(reversed(parser.words), ror)
 
     def generate_sentence(self):
@@ -36,7 +36,9 @@ class MarkovModel:
         # Our current element
         window = deque(self.dictogram.random_start())
         element = self.dictogram.data[tuple(window)]
-        generated_sentence = ' '.join(window)
+        generated_sentence = ' '.join(list(reversed(window)))
+
+        print(window)
 
         # If the window has a split
         if '[SPLIT]' in generated_sentence:
@@ -51,7 +53,7 @@ class MarkovModel:
 
             # If the word is a sentence end, we finish off the sentence.
             if current_word == '[SPLIT]':
-                generated_sentence += '.'
+                print(window)
                 break
 
             # We make the new word or phrase our current element
@@ -60,10 +62,10 @@ class MarkovModel:
             element = self.dictogram.data[tuple(window)]
 
             # We only use the first word in the phrase
-            word = " " + current_word
+            word = current_word + " "
 
             # Add current word to our new sentence
-            generated_sentence += word
+            generated_sentence = word + generated_sentence
 
         sentence_length = len(generated_sentence)
 
@@ -80,5 +82,5 @@ if __name__ == '__main__':
 
     print("Booted")
 
-    for i in range(100):
+    for i in range(1):
         print(model.generate_sentence())

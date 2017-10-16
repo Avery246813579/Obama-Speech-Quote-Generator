@@ -47,22 +47,22 @@ class Dictogram:
                 creating = True
                 window.clear()
 
+                window.appendleft(current_word)
+
     def next_item(self, window, word):
         split = False
 
         if word[-1] == '.':
-            word = word[:-1]
-            split = True
+            self.next_item(window, '[SPLIT]')
+
+            return True
 
         # Add current data to our Dictogram
         self.add(tuple(window), word)
 
         # Add the next number in the sequence
         window.append(word)
-
-        # Remove the left number in the sequence
-        if window.popleft() == '[SPLIT]':
-            self.sentence_starts.append(tuple(window))
+        window.popleft()
 
         # End of Word
         if split:
@@ -102,6 +102,6 @@ class Dictogram:
 
 
 if __name__ == "__main__":
-    test_dict = Dictogram(['I', 'am', 'doing', 'good.', 'How', 'are', 'you.'], 2)
+    test_dict = Dictogram(list(reversed(['I', 'am', 'doing', 'good.', 'How', 'are', 'you.'])), 1)
     print(str(test_dict))
     print(str(test_dict.sentence_starts))
