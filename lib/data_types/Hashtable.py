@@ -56,6 +56,10 @@ class HashTable(object):
 
         return length
 
+    def _get_bucket(self, key):
+        bucket_number = hash(key) % len(self.buckets)
+        return self.buckets[bucket_number]
+
     def contains(self, key):
         """Return True if this hash table contains the given key, or False"""
         bucket_number = hash(key) % len(self.buckets)
@@ -80,6 +84,8 @@ class HashTable(object):
             if current.data[0] == key:
                 return current.data[1]
 
+            current = current.next
+
         raise KeyError
 
     def set(self, key, value):
@@ -90,7 +96,7 @@ class HashTable(object):
         current = bucket.head
         while current is not None:
             if current.data[0] == key:
-                current.data[1] = value
+                current.data = (key, value)
                 return
 
             current = current.next
@@ -99,7 +105,7 @@ class HashTable(object):
 
     def delete(self, key):
         if not self.contains(key):
-            return
+            raise KeyError
 
         bucket_number = hash(key) % len(self.buckets)
         bucket = self.buckets[bucket_number]
@@ -121,6 +127,7 @@ class HashTable(object):
             current = current.next
 
         raise KeyError
+
 
 def test_hash_table():
     ht = HashTable()

@@ -165,6 +165,7 @@ class MarkovModel:
 
 
 if __name__ == '__main__':
+    # Save with pickel
     model = MarkovModel("static/test_data.txt", 3)
 
     print("Booted")
@@ -179,4 +180,5 @@ if __name__ == '__main__':
 
     print("\n\n\n")
 
-    print(model.generate_with_seed('that makes us'))
+    for i in range(10):
+        model.generate_with_seed('the American people')
