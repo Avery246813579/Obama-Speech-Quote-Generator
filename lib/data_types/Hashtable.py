@@ -44,62 +44,65 @@ class HashTable(object):
         """Return a list of all items (key-value pairs) in this hash table"""
         # Collect all pairs of key-value entries in each of the buckets
         all_items = []
+
         for bucket in self.buckets:
             all_items.extend(bucket.items())
+
         return all_items
 
-    def length(self):
+    def length(self):  # O(N)
         """Return the length of this hash table by traversing its buckets"""
-        length = 0
-        for bucket in self.buckets:
-            length += bucket.length()
+        length = 0  # Constant
 
-        return length
+        for bucket in self.buckets:  # Linear
+            length += bucket.length()  # Constant
 
-    def _find_bucket(self, key):
-        bucket_number = hash(key) % len(self.buckets)
-        return self.buckets[bucket_number]
+        return length  # Constant
 
-    def _find_node(self, key):
-        bucket = self._find_bucket(key)
+    def _find_bucket(self, key):  # O(N)
+        bucket_number = hash(key) % len(self.buckets)  # Constant
+        return self.buckets[bucket_number]  # Constant
 
-        current = bucket.head
-        while current is not None:
-            if current.data[0] == key:
-                return current
+    def _find_node(self, key):  # O(N)
+        bucket = self._find_bucket(key)  # Constant
 
-            current = current.next
+        current = bucket.head  # Constant
+        while current is not None:  # Linear
+            if current.data[0] == key:  # Constant
+                return current  # Constant
 
-    def contains(self, key):
+            current = current.next  # Constant
+
+    def contains(self, key):  # O(N)
         """Return True if this hash table contains the given key, or False"""
-        return self._find_node(key) is not None
+        return self._find_node(key) is not None  # Linear
 
-    def get(self, key):
+    def get(self, key):  # O(N)
         """Return the value associated with the given key, or raise KeyError"""
-        node = self._find_node(key)
+        node = self._find_node(key)  # Linear
 
-        if node is None:
-            raise KeyError
+        if node is None:  # Constant
+            raise KeyError  # Constant
 
-        return node.data[1]
+        return node.data[1]  # Constant
 
-    def set(self, key, value):
+    def set(self, key, value):  # O(N)
         """Insert or update the given key with its associated value"""
-        node = self._find_node(key)
+        node = self._find_node(key)  # Linear
 
-        if node is None:
-            self._find_bucket(key).append((key, value))
-            return
+        if node is None:  # Constant
+            self._find_bucket(key).append((key, value))  # Constant
+            return  # Constant
 
-        node.data = (key, value)
+        node.data = (key, value)  # Constant
 
-    def delete(self, key):
-        node = self._find_node(key)
+    def delete(self, key):  # O(N) or 2n
+        node = self._find_node(key)  # O(N)
 
-        if self._find_node(key) is None:
-            raise KeyError
+        if self._find_node(key) is None:  # Constant
+            raise KeyError  # Constant
 
-        self._find_bucket(key).delete(node.data)
+        self._find_bucket(key).delete(node.data)  # O(N)
 
 
 def test_hash_table():
