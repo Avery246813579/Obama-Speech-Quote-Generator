@@ -59,18 +59,30 @@ class HashTable(object):
 
         return length  # Constant
 
-    def _find_bucket(self, key):  # O(N)
-        bucket_number = hash(key) % len(self.buckets)  # Constant
-        return self.buckets[bucket_number]  # Constant
+    def _find_bucket(self, key):  # Constant
+        """ Find a bucket from a key """
+
+        # We get the bucket index
+        bucket_index = hash(key) % len(self.buckets)  # Constant
+
+        # Returns the bucket at an index
+        return self.buckets[bucket_index]  # Constant
 
     def _find_node(self, key):  # O(N)
+        """ Gets a node from our bucket """
         bucket = self._find_bucket(key)  # Constant
 
+        # Set our current node
         current = bucket.head  # Constant
+
+        # Go until our next is None
         while current is not None:  # Linear
+
+            # If our data key is our key then we return back this node
             if current.data[0] == key:  # Constant
                 return current  # Constant
 
+            # Go to the next node
             current = current.next  # Constant
 
     def contains(self, key):  # O(N)
@@ -81,27 +93,34 @@ class HashTable(object):
         """Return the value associated with the given key, or raise KeyError"""
         node = self._find_node(key)  # Linear
 
+        # If the Node doesn't exist raise KeyError
         if node is None:  # Constant
             raise KeyError  # Constant
 
+        # Return the data of the node
         return node.data[1]  # Constant
 
     def set(self, key, value):  # O(N)
         """Insert or update the given key with its associated value"""
         node = self._find_node(key)  # Linear
 
+        # If the Node doesn't exist we add the node
         if node is None:  # Constant
             self._find_bucket(key).append((key, value))  # Constant
             return  # Constant
 
+        # Set the data of the node to a new value. We have to resign because Tuples are immutable.
         node.data = (key, value)  # Constant
 
     def delete(self, key):  # O(N) or 2n
+        """ Delete a Node from the HashTable """
         node = self._find_node(key)  # O(N)
 
+        # If we can't find the Node then raise KeyError
         if self._find_node(key) is None:  # Constant
             raise KeyError  # Constant
 
+        # Delete the node from the bucket
         self._find_bucket(key).delete(node.data)  # O(N)
 
 
