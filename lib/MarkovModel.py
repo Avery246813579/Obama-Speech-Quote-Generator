@@ -92,7 +92,9 @@ class MarkovModel:
         # Return our sentence and capitalize it. Also make sure there are no uncalled for None tokens
         return generated_sentence
 
-    def generate_with_seed(self, seed):
+    def generate_with_seed(self, raw_seed):
+        seed = tuple(raw_seed.split())
+
         if seed in self.dictogram.forwards and tuple(reversed(seed)) in self.dictogram.backwards:
             forward_element = self.dictogram.forwards[seed]
             forward_window = deque(seed)
@@ -121,7 +123,7 @@ class MarkovModel:
 
             # If our sentence is too short or long we return a new sentence
             if forward_length > self.MAX_TWEET_LENGTH / 2 or forward_length < self.MIN_TWEET_LENGTH / 2:
-                return self.generate_with_seed(seed)
+                return self.generate_with_seed(raw_seed)
 
             backward_window = deque(tuple(reversed(seed)))
             backward_element = self.dictogram.backwards[tuple(reversed(seed))]
@@ -129,7 +131,7 @@ class MarkovModel:
 
             # If the window has a split
             if '[SPLIT]' in backward_sentence:
-                return self.generate_with_seed(seed)
+                return self.generate_with_seed(raw_seed)
 
             for _ in range(self.MAX_ITERATION_ATTEMPTS):
                 word = None
@@ -153,7 +155,7 @@ class MarkovModel:
 
             # If our sentence is too short or long we return a new sentence
             if backward_length > self.MAX_TWEET_LENGTH / 2 or backward_length < self.MIN_TWEET_LENGTH / 2:
-                return self.generate_with_seed(seed)
+                return self.generate_with_seed(raw_seed)
 
             print(backward_sentence + forward_sentence)
 
@@ -177,4 +179,4 @@ if __name__ == '__main__':
 
     print("\n\n\n")
 
-    print(model.generate_with_seed(('that', 'makes', 'us',)))
+    print(model.generate_with_seed('that makes us'))
