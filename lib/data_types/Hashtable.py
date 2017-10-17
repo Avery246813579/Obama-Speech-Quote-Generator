@@ -60,7 +60,7 @@ class HashTable(object):
         return length  # Constant
 
     def _find_bucket(self, key):  # Constant
-        """ Find a bucket from a key """
+        """ Find a bucket using a key """
 
         # We get the bucket index
         bucket_index = hash(key) % len(self.buckets)  # Constant
@@ -142,15 +142,15 @@ def test_hash_table():
     print('length: ' + str(ht.length()))
 
     # Enable this after implementing delete:
-    # print('Deleting entries:')
-    # ht.delete('I')
-    # print(ht)
-    # ht.delete('V')
-    # print(ht)
-    # ht.delete('X')
-    # print(ht)
-    # print('contains(X): ' + str(ht.contains('X')))
-    # print('length: ' + str(ht.length()))
+    print('Deleting entries:')
+    ht.delete('I')
+    print(ht)
+    ht.delete('V')
+    print(ht)
+    ht.delete('X')
+    print(ht)
+    print('contains(X): ' + str(ht.contains('X')))
+    print('length: ' + str(ht.length()))
 
 
 if __name__ == '__main__':

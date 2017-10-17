@@ -15,7 +15,7 @@ class MarkovModel:
     # Max amount of attempts we have to generate a new sentence
     MAX_ITERATION_ATTEMPTS = 100
 
-    def __init__(self, corpus, order):
+    def __init__(self, corpus, max_order):
         """ Constructing the Markov Model
 
         :param corpus:      The file location of the corpus we want to use
@@ -23,8 +23,11 @@ class MarkovModel:
         """
 
         self.parser = FileParser(corpus)
-        self.dictogram = Dictogram(self.parser.words, order)
-        # self.back = Dictogram(reversed(parser.words), ror)
+        self.dictogram = []
+        self.max_order = max_order
+
+        for order in range(1, max_order + 1):
+            self.dictogram.append(Dictogram(self.parser.words, order))
 
     def generate_sentence(self, backward=False):
         """ Generates a sentence by first getting a sentence start then getting a random token following that word. We
@@ -38,12 +41,12 @@ class MarkovModel:
         generated_sentence = ''
 
         if backward:
-            window = deque(self.dictogram.random_start(True))
-            element = self.dictogram.backwards[tuple(window)]
+            window = deque(self.dictogram[self.max_order - 1].random_start(True))
+            element = self.dictogram[self.max_order - 1].backwards[tuple(window)]
             generated_sentence = ' '.join(list(reversed(window)))
         else:
-            window = deque(self.dictogram.random_start(False))
-            element = self.dictogram.forwards[tuple(window)]
+            window = deque(self.dictogram[self.max_order - 1].random_start(False))
+            element = self.dictogram[self.max_order - 1].forwards[tuple(window)]
             generated_sentence = ' '.join(window)
 
         # If the window has a split
@@ -69,7 +72,7 @@ class MarkovModel:
             window.append(current_word)
 
             if backward:
-                element = self.dictogram.backwards[tuple(window)]
+                element = self.dictogram[self.max_order - 1].backwards[tuple(window)]
 
                 # We only use the first word in the phrase
                 word = current_word + " "
@@ -77,7 +80,7 @@ class MarkovModel:
                 # Add current word to our new sentence
                 generated_sentence = word + generated_sentence
             else:
-                element = self.dictogram.forwards[tuple(window)]
+                element = self.dictogram[self.max_order - 1].forwards[tuple(window)]
 
                 word = " " + current_word
 
@@ -95,8 +98,8 @@ class MarkovModel:
     def generate_with_seed(self, raw_seed):
         seed = tuple(raw_seed.split())
 
-        if seed in self.dictogram.forwards and tuple(reversed(seed)) in self.dictogram.backwards:
-            forward_element = self.dictogram.forwards[seed]
+        if seed in self.dictogram[self.max_order - 1].forwards and tuple(reversed(seed)) in self.dictogram[self.max_order - 1].backwards:
+            forward_element = self.dictogram[self.max_order - 1].forwards[seed]
             forward_window = deque(seed)
             forward_sentence = ''
 
@@ -115,7 +118,7 @@ class MarkovModel:
                 forward_window.popleft()
                 forward_window.append(current_word)
 
-                forward_element = self.dictogram.forwards[tuple(forward_window)]
+                forward_element = self.dictogram[self.max_order - 1].forwards[tuple(forward_window)]
                 word = " " + current_word
                 forward_sentence += word
 
@@ -126,7 +129,7 @@ class MarkovModel:
                 return self.generate_with_seed(raw_seed)
 
             backward_window = deque(tuple(reversed(seed)))
-            backward_element = self.dictogram.backwards[tuple(reversed(seed))]
+            backward_element = self.dictogram[self.max_order - 1].backwards[tuple(reversed(seed))]
             backward_sentence = ' '.join(list(reversed(backward_window)))
 
             # If the window has a split
@@ -147,7 +150,7 @@ class MarkovModel:
                 backward_window.popleft()
                 backward_window.append(current_word)
 
-                backward_element = self.dictogram.backwards[tuple(backward_window)]
+                backward_element = self.dictogram[self.max_order - 1].backwards[tuple(backward_window)]
                 word = current_word + " "
                 backward_sentence = word + backward_sentence
 
@@ -157,28 +160,25 @@ class MarkovModel:
             if backward_length > self.MAX_TWEET_LENGTH / 2 or backward_length < self.MIN_TWEET_LENGTH / 2:
                 return self.generate_with_seed(raw_seed)
 
-            print(backward_sentence + forward_sentence)
-
-            return True
-        else:
-            return False
+            return backward_sentence + forward_sentence
 
 
 if __name__ == '__main__':
-    # Save with pickel
+    # Save with Pickle
     model = MarkovModel("static/test_data.txt", 3)
 
-    print("Booted")
-
-    print("FORWARD:")
+    print("FORWARD:\n")
     for i in range(10):
         print(model.generate_sentence())
 
-    print("BACKWARD:")
+    print("\n\n\n")
+
+    print("BACKWARD:\n")
     for i in range(10):
         print(model.generate_sentence(True))
 
     print("\n\n\n")
 
+    print("MIDDLE OUT:\n")
     for i in range(10):
-        model.generate_with_seed('the American people')
+        print(model.generate_with_seed('the American people'))
