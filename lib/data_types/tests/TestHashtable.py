@@ -62,6 +62,7 @@ class HashTableTest(unittest.TestCase):
         assert ht.length() == 3
         ht.delete('I')
         ht.delete('X')
+
         assert ht.length() == 1
         with self.assertRaises(KeyError):
             ht.delete('X')  # Key no longer exists

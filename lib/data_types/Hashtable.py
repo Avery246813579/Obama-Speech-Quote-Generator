@@ -56,77 +56,50 @@ class HashTable(object):
 
         return length
 
-    def _get_bucket(self, key):
+    def _find_bucket(self, key):
         bucket_number = hash(key) % len(self.buckets)
         return self.buckets[bucket_number]
 
-    def contains(self, key):
-        """Return True if this hash table contains the given key, or False"""
-        bucket_number = hash(key) % len(self.buckets)
-        bucket = self.buckets[bucket_number]
+    def _find_node(self, key):
+        bucket = self._find_bucket(key)
 
         current = bucket.head
         while current is not None:
             if current.data[0] == key:
-                return True
+                return current
 
             current = current.next
 
-        return False
+    def contains(self, key):
+        """Return True if this hash table contains the given key, or False"""
+        return self._find_node(key) is not None
 
     def get(self, key):
         """Return the value associated with the given key, or raise KeyError"""
-        bucket_number = hash(key) % len(self.buckets)
-        bucket = self.buckets[bucket_number]
+        node = self._find_node(key)
 
-        current = bucket.head
-        while current is not None:
-            if current.data[0] == key:
-                return current.data[1]
+        if node is None:
+            raise KeyError
 
-            current = current.next
-
-        raise KeyError
+        return node.data[1]
 
     def set(self, key, value):
         """Insert or update the given key with its associated value"""
-        bucket_number = hash(key) % len(self.buckets)
-        bucket = self.buckets[bucket_number]
+        node = self._find_node(key)
 
-        current = bucket.head
-        while current is not None:
-            if current.data[0] == key:
-                current.data = (key, value)
-                return
+        if node is None:
+            self._find_bucket(key).append((key, value))
+            return
 
-            current = current.next
-
-        bucket.append((key, value))
+        node.data = (key, value)
 
     def delete(self, key):
-        if not self.contains(key):
+        node = self._find_node(key)
+
+        if self._find_node(key) is None:
             raise KeyError
 
-        bucket_number = hash(key) % len(self.buckets)
-        bucket = self.buckets[bucket_number]
-
-        last = None
-        current = bucket.head
-        while current is not None:
-            if current.data[0] == key:
-                if bucket.tail.data[0] == key:
-                    bucket.tail = last
-
-                if last is None:
-                    bucket.head = current.next
-                else:
-                    last.next = current.next
-
-                return
-
-            current = current.next
-
-        raise KeyError
+        self._find_bucket(key).delete(node.data)
 
 
 def test_hash_table():
