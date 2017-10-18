@@ -59,6 +59,7 @@ class HashTable(object):
 
         return length  # Constant
 
+    # We want this in Linked List but we no change it yet
     def _find_bucket(self, key):  # Constant
         """ Find a bucket using a key """
 
