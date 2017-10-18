@@ -34,6 +34,9 @@ class Dictogram:
         words_length = len(words)
         window = deque(words[0: order])
 
+        if backward and window[0][-1] == '.':
+            window[0] = window[0][:-1]
+
         # Used to find the start of sentences
         if backward:
             self.sentence_ends.append(tuple(window))
@@ -62,7 +65,7 @@ class Dictogram:
                 window.clear()
 
                 if backward:
-                    window.appendleft(current_word)
+                    window.appendleft(current_word[:-1])
 
     def next_item(self, data, backward, window, word):
         split = False

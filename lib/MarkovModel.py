@@ -92,13 +92,28 @@ class MarkovModel:
         if sentence_length > self.MAX_TWEET_LENGTH or sentence_length < self.MIN_TWEET_LENGTH:
             return self.generate_sentence(backward)
 
+        # If we are backwards add a period at the end of a sentence
+        if backward:
+            generated_sentence += '.'
+
         # Return our sentence and capitalize it. Also make sure there are no uncalled for None tokens
         return generated_sentence
 
     def generate_with_seed(self, raw_seed):
-        seed = tuple(raw_seed.split())
+        seed = list(raw_seed.split())
 
-        if seed in self.dictogram[self.max_order - 1].forwards and tuple(reversed(seed)) in self.dictogram[self.max_order - 1].backwards:
+        while len(seed) < self.max_order:
+            word = self.dictogram[len(seed) - 1].forwards[tuple(seed)].random_word()
+
+            if word == '[SPLIT]':
+                return self.generate_with_seed(raw_seed)
+
+            seed.append(word)
+
+        seed = tuple(seed)
+
+        if seed in self.dictogram[self.max_order - 1].forwards and tuple(reversed(seed)) in self.dictogram[
+                    self.max_order - 1].backwards:
             forward_element = self.dictogram[self.max_order - 1].forwards[seed]
             forward_window = deque(seed)
             forward_sentence = ''
@@ -181,4 +196,4 @@ if __name__ == '__main__':
 
     print("MIDDLE OUT:\n")
     for i in range(10):
-        print(model.generate_with_seed('the American people'))
+        print(model.generate_with_seed('America'))
