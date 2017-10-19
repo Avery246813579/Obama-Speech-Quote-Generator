@@ -6,8 +6,10 @@ from flask import Flask, request, jsonify, render_template, json
 
 import twitter
 from MarkovModel import MarkovModel
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 conn = psycopg2.connect("dbname=dds7q3a5dl5c45 user=edksigbbpxnyrh password=" +
                         os.environ.get('DATABASE_PASSWORD') + " host=" + os.environ.get('DATABASE_HOST'))
@@ -25,6 +27,7 @@ for i in range(len(favorites_raw)):
     favorites.append(favorites_raw[i][1])
 
 cur.close()
+
 
 @app.route('/tweet', methods=['POST'])
 def tweet():
@@ -81,8 +84,6 @@ def favorite_tweet():
         })
 
 
-
-
 @app.route('/favorite_tweets', methods=['GET'])
 def get_favorite_tweets():
     return jsonify({
@@ -93,20 +94,9 @@ def get_favorite_tweets():
 
 @app.route('/new', methods=['POST'])
 def generate_new_tweet():
-    body = json.loads(request.data)
-
-    words = body['words']
-
-    sentence = None
-    if words is None:
-        sentence = model.generate_sentence()
-    else:
-        try:
-            sentence = model.generate_sentence()
-        except ValueError:
-            sentence = model.generate_sentence()
-
+    sentence = model.generate_sentence()
     tweets.append(sentence)
+
     return jsonify({
         "success": True,
         "data": sentence,
@@ -129,11 +119,11 @@ def default_route():
 
     tweets.append(sentence)
     print(favorites)
-    return render_template('index.html', sentence=sentence, id="**/id =" + str(len(tweets) - 1) + "/**", time=time.time(),
-                           words=model.dictogram.word_count, lines=len(model.parser.lines))
+    return render_template('index.html', sentence=sentence, id="**/id =" + str(len(tweets) - 1) + "/**",
+                           time=time.time(),
+                           words=model.dictogram[0].word_count, lines=len(model.parser.lines))
 
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(debug=True, host='0.0.0.0', port=port)
-

@@ -11,7 +11,7 @@ A light weight Markov Model implemented into python
 + Backward_Forward N=3
 + Middle Out N=3
 + Markov Model with lower orders N=1,2,3
-+ Load faster
+- Load faster
 * SHIP *
 * LINK TO TWITTER *
 * TOPICS *
