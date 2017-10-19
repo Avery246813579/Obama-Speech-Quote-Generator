@@ -2,7 +2,7 @@ import os
 import time
 
 import psycopg2
-from flask import Flask, request, jsonify, render_template, json
+from flask import Flask, request, jsonify, send_from_directory, json
 
 import twitter
 from MarkovModel import MarkovModel
@@ -118,10 +118,7 @@ def default_route():
             sentence = model.generate_sentence()
 
     tweets.append(sentence)
-    print(favorites)
-    return render_template('index.html', sentence=sentence, id="**/id =" + str(len(tweets) - 1) + "/**",
-                           time=time.time(),
-                           words=model.dictogram[0].word_count, lines=len(model.parser.lines))
+    return send_from_directory('react-website/build', 'index.html')
 
 
 if __name__ == '__main__':
