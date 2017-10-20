@@ -29,7 +29,7 @@ class App extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {quote: "Filler Text", id: 0, favorites: ['Dogs', 'Cats']};
+        this.state = {quote: "Filler Text", id: 0, favorites: ['Dogs', 'Cats'], url: ""};
         this.refreshSentence = this.refreshSentence.bind(this);
         this.tweet = this.tweet.bind(this);
         this.componentWillMount = this.componentWillMount.bind(this);
@@ -40,7 +40,7 @@ class App extends Component {
     refreshSentence() {
         let self = this;
 
-        fetch('http://127.0.0.1:5000/new', {
+        fetch(self.state.url + '/new', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json'
@@ -59,7 +59,7 @@ class App extends Component {
     tweet() {
         let self = this;
 
-        fetch('http://127.0.0.1:5000/tweet', {
+        fetch(self.state.url + '/tweet', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json'
@@ -77,7 +77,7 @@ class App extends Component {
     favorite() {
         let self = this;
 
-        fetch('http://127.0.0.1:5000/favorite_tweet', {
+        fetch(self.state.url + '/favorite_tweet', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json'
@@ -99,7 +99,7 @@ class App extends Component {
         this.refreshSentence();
         let self = this;
 
-        fetch('http://127.0.0.1:5000/favorite_tweets', {
+        fetch(self.state.url + '/favorite_tweets', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json'

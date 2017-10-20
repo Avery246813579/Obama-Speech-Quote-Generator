@@ -2,3 +2,4 @@
 .env
 .DS_Store
 __pycache__/
+react-website/node_modules

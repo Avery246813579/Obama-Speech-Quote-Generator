@@ -1,12 +1,10 @@
 import os
-import time
 
 import psycopg2
 from flask import Flask, request, jsonify, send_from_directory, json
-
-import twitter
-from MarkovModel import MarkovModel
 from flask_cors import CORS
+from lib.twitter import tweet
+import pickle
 
 app = Flask(__name__)
 CORS(app)
@@ -14,8 +12,11 @@ CORS(app)
 conn = psycopg2.connect("dbname=dds7q3a5dl5c45 user=edksigbbpxnyrh password=" +
                         os.environ.get('DATABASE_PASSWORD') + " host=" + os.environ.get('DATABASE_HOST'))
 
-model = MarkovModel("lib/static/test_data.txt", 3)
+model = None
 tweets = []
+
+with open('static/data/model.pickle', 'rb') as handle:
+    model = pickle.load(handle)
 
 cur = conn.cursor()
 
@@ -36,7 +37,7 @@ def tweet():
     # noinspection PyBroadException
     try:
         tweet_value = tweets[body['tweet']]
-        twitter.tweet(tweet_value)
+        tweet(tweet_value)
 
         return jsonify({
             "success": True

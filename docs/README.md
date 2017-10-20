@@ -1,3 +1,0 @@
-# OSQG Documents
-
-Coming Soon!
