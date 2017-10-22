@@ -19,7 +19,6 @@ with open('static/data/model.pickle', 'rb') as handle:
     model = pickle.load(handle)
 
 cur = conn.cursor()
-
 cur.execute("SELECT * FROM Tweets;")
 favorites_raw = list(cur.fetchall())
 favorites = []
