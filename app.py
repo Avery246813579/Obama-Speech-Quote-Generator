@@ -7,7 +7,7 @@ from lib.twitter import tweet
 import pickle
 
 app = Flask(__name__)
-# CORS(app)
+CORS(app)
 
 conn = psycopg2.connect("dbname=dds7q3a5dl5c45 user=edksigbbpxnyrh password=" +
                         os.environ.get('DATABASE_PASSWORD') + " host=" + os.environ.get('DATABASE_HOST'))
@@ -19,6 +19,7 @@ with open('static/data/model.pickle', 'rb') as handle:
     model = pickle.load(handle)
 
 cur = conn.cursor()
+
 cur.execute("SELECT * FROM Tweets;")
 favorites_raw = list(cur.fetchall())
 favorites = []
@@ -94,25 +95,9 @@ def get_favorite_tweets():
 
 @app.route('/new', methods=['POST'])
 def generate_new_tweet():
-    body = json.loads(request.data)
-    sentence = ''
-
-    if 'seed' in body:
-        if len(body['seed'].split()) > 3 or len(body['seed'].split()) < 1:
-            return jsonify({
-                "success": False
-            })
-
-        sentence = model.generate_with_seed(body['seed'])
-    else:
-        sentence = model.generate_sentence()
-
-    if sentence is None:
-        return jsonify({
-            "success": False
-        })
-
+    sentence = model.generate_sentence()
     tweets.append(sentence)
+
     return jsonify({
         "success": True,
         "data": sentence,
@@ -137,5 +122,6 @@ def default_route():
     return send_from_directory('react-website/build', 'index.html')
 
 
-port = int(os.environ.get('PORT', 5000))
-app.run(debug=True, host='0.0.0.0', port=port)
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=True, host='0.0.0.0', port=port)
