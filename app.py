@@ -4,6 +4,7 @@ import psycopg2
 from flask import Flask, request, jsonify, send_from_directory, json
 from lib.twitter import tweet
 from RainbowChain import RainbowChain
+import pickle
 
 app = Flask(__name__)
 
@@ -11,6 +12,7 @@ conn = psycopg2.connect("dbname=dds7q3a5dl5c45 user=edksigbbpxnyrh password=" +
                         os.environ.get('DATABASE_PASSWORD') + " host=" + os.environ.get('DATABASE_HOST'))
 
 tweets = []
+model = None
 
 
 print("ONE")
@@ -123,8 +125,11 @@ def default_route():
 print("HERE3")
 
 print("ASDASD")
-model = RainbowChain('static/data/raw_corpus.txt', 3)
 
+with open('static/data/model.pickle', 'rb') as handle:
+    model = pickle.load(handle)
+
+print("ASsddsdsDASD")
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
