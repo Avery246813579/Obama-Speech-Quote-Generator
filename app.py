@@ -13,8 +13,11 @@ conn = psycopg2.connect("dbname=dds7q3a5dl5c45 user=edksigbbpxnyrh password=" +
 model = None
 tweets = []
 
+print("HERE")
 with open('static/data/model.pickle', 'rb') as handle:
     model = pickle.load(handle)
+
+print("HERE2")
 
 cur = conn.cursor()
 
@@ -120,6 +123,11 @@ def default_route():
     return send_from_directory('react-website/build', 'index.html')
 
 
+print("HERE3")
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(debug=True, host='0.0.0.0', port=port)
+    print("HERE5")
+
+print("HERE4")
