@@ -22,7 +22,7 @@ class RainbowChain:
         for order in range(1, max_order + 1):
             print("START: " + str(order))
             self.dictogram.append(Dictogram(self.parser.words, order))
-            print("START: " + str(order))
+            print("END: " + str(order))
 
 
     def generate_sentence(self, backward=False, min_length=50, max_length=140):
