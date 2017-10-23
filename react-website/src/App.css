@@ -36,19 +36,18 @@ html {
     color: white;
 }
 
-#about {
+.about {
     position: relative;
     top: -150px;
     border-top: 6px solid #880000;
     margin: auto;
-    width: calc(100% - 50px);
+    width: 75%;
     background-color: white;
     padding: 10px;
 }
 
-#about .header {
+.about .header {
     font-size: 20px;
-    padding-top: 20px;
     border-bottom: 1px solid #F3F3F3;
 }
 
