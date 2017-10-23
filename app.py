@@ -6,7 +6,6 @@ from lib.twitter import tweet
 import pickle
 
 app = Flask(__name__)
-CORS(app)
 
 conn = psycopg2.connect("dbname=dds7q3a5dl5c45 user=edksigbbpxnyrh password=" +
                         os.environ.get('DATABASE_PASSWORD') + " host=" + os.environ.get('DATABASE_HOST'))
