@@ -1,13 +1,13 @@
 # This file is used to load our Markov Model and save it using pickle. This shortens our load time by > 2x
 
-from RainbowChain import MarkovModel
+from RainbowChain import RainbowChain
 import pickle
 import time
 
 start_time = time.time()
 
 print("Loading Markov Model\n===============")
-raw_model = MarkovModel('../static/data/raw_corpus.txt', 3)
+raw_model = RainbowChain('../static/data/raw_corpus.txt', 3)
 
 corpus_load = time.time()
 print("Corpus Loaded in " + str(corpus_load - start_time) + "s\n")

@@ -95,9 +95,25 @@ def get_favorite_tweets():
 
 @app.route('/new', methods=['POST'])
 def generate_new_tweet():
-    sentence = model.generate_sentence()
-    tweets.append(sentence)
+    body = json.loads(request.data)
+    sentence = ''
 
+    if 'seed' in body:
+        if len(body['seed'].split()) > 3 or len(body['seed'].split()) < 1:
+            return jsonify({
+                "success": False
+            })
+
+        sentence = model.generate_with_seed(body['seed'])
+    else:
+        sentence = model.generate_sentence()
+
+    if sentence is None:
+        return jsonify({
+            "success": False
+        })
+
+    tweets.append(sentence)
     return jsonify({
         "success": True,
         "data": sentence,

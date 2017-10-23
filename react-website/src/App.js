@@ -29,7 +29,7 @@ class App extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {quote: "Filler Text", id: 0, favorites: ['Dogs', 'Cats'], url: ""};
+        this.state = {quote: "Filler Text", id: 0, favorites: ['Dogs', 'Cats'], url: "http://127.0.0.1:5000"};
         this.refreshSentence = this.refreshSentence.bind(this);
         this.tweet = this.tweet.bind(this);
         this.componentWillMount = this.componentWillMount.bind(this);
