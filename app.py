@@ -2,22 +2,21 @@ import os
 
 import psycopg2
 from flask import Flask, request, jsonify, send_from_directory, json
+from flask_cors import CORS
 from lib.twitter import tweet
-from RainbowChain import RainbowChain
 import pickle
-from MM import RainbowChain
+from RainbowChain import RainbowChain
 
 app = Flask(__name__)
+CORS(app)
 
 conn = psycopg2.connect("dbname=dds7q3a5dl5c45 user=edksigbbpxnyrh password=" +
                         os.environ.get('DATABASE_PASSWORD') + " host=" + os.environ.get('DATABASE_HOST'))
 
-tweets = []
 model = None
+tweets = []
 
-
-print("ONE")
-print("TWO")
+model = RainbowChain('static/data/raw_corpus.txt', 2)
 
 cur = conn.cursor()
 
@@ -96,9 +95,25 @@ def get_favorite_tweets():
 
 @app.route('/new', methods=['POST'])
 def generate_new_tweet():
-    sentence = model.generate_sentence()
-    tweets.append(sentence)
+    body = json.loads(request.data)
+    sentence = ''
 
+    if 'seed' in body:
+        if len(body['seed'].split()) > 3 or len(body['seed'].split()) < 1:
+            return jsonify({
+                "success": False
+            })
+
+        sentence = model.generate_with_seed(body['seed'])
+    else:
+        sentence = model.generate_sentence()
+
+    if sentence is None:
+        return jsonify({
+            "success": False
+        })
+
+    tweets.append(sentence)
     return jsonify({
         "success": True,
         "data": sentence,
@@ -123,18 +138,6 @@ def default_route():
     return send_from_directory('react-website/build', 'index.html')
 
 
-print("HERE3")
-
-print("ASDASD")
-
-model = RainbowChain('static/data/raw_corpus.txt', 2)
-
-print("ASsddsdsDASD")
-
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(debug=True, host='0.0.0.0', port=port)
-    print("HERE5")
-
-
-
