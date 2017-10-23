@@ -14,7 +14,7 @@ conn = psycopg2.connect("dbname=dds7q3a5dl5c45 user=edksigbbpxnyrh password=" +
 model = None
 tweets = []
 
-model = RainbowChain('static/data/raw_corpus.txt', 2)
+model = RainbowChain('static/data/raw_corpus.txt', 3)
 
 cur = conn.cursor()
 
