@@ -226,7 +226,7 @@ class App extends Component {
                     <a href="https://github.com/Avery246813579/Obama-Speech-Quote-Generator">This project</a>&nbsp;
                     was made by
                     <a href="https://www.linkedin.com/in/avery-durrant-676402148/">Avery Durrant</a>&nbsp;
-                    using Markov Chains. The Corpus I used was has a lot lines of text and a few words. It was taken from
+                    using Markov Chains. The Corpus I used has over 850,000 words and 40k lines of text. It was taken from
                     over 200 of Barack Obama's Speeches. To view our tweets look at our
                     &nbsp;<a href="https://twitter.com/WhatDidObamaSay">twitter account</a>
                 </div>
