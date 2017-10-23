@@ -3,7 +3,6 @@ import os
 import psycopg2
 from flask import Flask, request, jsonify, send_from_directory, json
 from lib.twitter import tweet
-import pickle
 from RainbowChain import RainbowChain
 
 app = Flask(__name__)
@@ -13,9 +12,7 @@ conn = psycopg2.connect("dbname=dds7q3a5dl5c45 user=edksigbbpxnyrh password=" +
 
 tweets = []
 
-print("HERE")
 model = RainbowChain('static/data/raw_corpus.txt', 3)
-print("HERE2")
 
 cur = conn.cursor()
 
