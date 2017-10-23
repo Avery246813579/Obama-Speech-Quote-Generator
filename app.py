@@ -5,6 +5,7 @@ from flask import Flask, request, jsonify, send_from_directory, json
 from lib.twitter import tweet
 from RainbowChain import RainbowChain
 import pickle
+from MM import RainbowChain
 
 app = Flask(__name__)
 
@@ -126,8 +127,7 @@ print("HERE3")
 
 print("ASDASD")
 
-with open('static/data/model.pickle', 'rb') as handle:
-    model = pickle.load(handle)
+model = RainbowChain('static/data/model.pickle', 3)
 
 print("ASsddsdsDASD")
 
