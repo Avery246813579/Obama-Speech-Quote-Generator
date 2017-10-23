@@ -127,7 +127,7 @@ print("HERE3")
 
 print("ASDASD")
 
-model = RainbowChain('static/data/raw_corpus.txt', 2)
+model = RainbowChain('static/data/raw_corpus.txt', 3)
 
 print("ASsddsdsDASD")
 
