@@ -15,6 +15,9 @@ model = None
 tweets = []
 
 model = RainbowChain('static/data/raw_corpus.txt', 2)
+# with open('static/data/model.pickle', 'rb') as handle:
+#     model = pickle.load(handle)
+
 
 cur = conn.cursor()
 
