@@ -14,8 +14,8 @@ conn = psycopg2.connect("dbname=dds7q3a5dl5c45 user=edksigbbpxnyrh password=" +
 model = None
 tweets = []
 
-# with open('static/data/model.pickle', 'rb') as handle:
-#     model = pickle.load(handle)
+with open('static/data/model.pickle', 'rb') as handle:
+    model = pickle.load(handle)
 
 
 cur = conn.cursor()
