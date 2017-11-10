@@ -1,14 +1,23 @@
 # Obama Speech Quote Generator
+The Obama Speech Quote Generator uses my [Python Rainbow Chain](https://github.com/Avery246813579/Python-Rainbow-Chain) project to generate a quote around an Obama topic. I use a corpus of around 850,000 words from over 200 of Obama's speeches. You can view the project in action [here](https://obama-quote-generator.herokuapp.com/)(it takes a while to load because of Heroku's free tier).
 
-This project using my Rainbow Chain repo to generate unique sentences
-and also randomly seeded sentences.
+### Prerequisites
+If you want to download Obama Speech Quote Generator. You will need: 
+1. Python 2/3
+2. Pip
+3. Flask
 
-## How to use
-1. Have flask install
-1. Install all of the requirements
-1. In app.py change the line
+## Running the Project locally
+To run the project locally simply do two commands. 
+    export FLASK_APP=app.py
+    
+    flask run
 
-    with open('static/data/model.pickle', 'rb') as handle:
-    model = pickle.load(handle)
+## Authors
+* **Avery Durrant** - *Initial work* - [Avery246813579](https://github.com/Avery246813579)
 
-1. Then the following two commands to start the server
+See also the list of [contributors](https://github.com/Avery246813579/Python-Rainbow-Chain/contributors) who participated in this project.
+
+
+## License
+This project is licensed under the MIT License
